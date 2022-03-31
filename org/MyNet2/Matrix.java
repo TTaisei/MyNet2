@@ -455,7 +455,7 @@ public class Matrix {
      * @return Matrix instance that had everage of each rows in this matrix.
      */
     public Matrix meanRow(){
-        Matrix rtn = new Matrix(nthis.row, 1);
+        Matrix rtn = new Matrix(this.row, 1);
 
         double num = 0.;
         for (int i = 0; i < this.row; i++){
