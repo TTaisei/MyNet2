@@ -528,7 +528,11 @@ public class Matrix {
             }
             i++;
             for (double num: ele){
-                str += String.format("%.4f ", num);
+                if (num < 0){
+                    str += String.format("%.4f ", num);
+                }else{
+                    str += String.format(" %.4f ", num);
+                }
             }
             str += "]";
         }
