@@ -4,6 +4,9 @@ import java.util.Random;
 import org.MyNet2.*;
 import org.MyNet2.actFunc.*;
 
+/**
+ * Class for dense layer.
+ */
 public class Dense extends Layer {
     /** The list of weight of this layer. */
     public Matrix w;
@@ -60,8 +63,7 @@ public class Dense extends Layer {
         this.inNum = inNum + 1;
         this.nodesNum = nodesNum;
         
-        // this.w = new Matrix(this.inNum, nodesNum, new Random(seed), -1, 1);
-        this.w = new Matrix(this.inNum, nodesNum, 0.5);
+        this.w = new Matrix(this.inNum, nodesNum, new Random(seed), -1, 1);
         this.x = new Matrix(this.inNum, this.nodesNum);
         this.a = new Matrix(this.inNum, this.nodesNum);
 

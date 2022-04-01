@@ -1,4 +1,3 @@
-import java.util.Random;
 import org.MyNet2.*;
 import org.MyNet2.layer.*;
 import org.MyNet2.actFunc.*;

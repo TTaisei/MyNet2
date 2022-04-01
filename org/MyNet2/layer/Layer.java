@@ -1,12 +1,13 @@
 package org.MyNet2.layer;
 
+import java.io.Serializable;
 import org.MyNet2.*;
 import org.MyNet2.actFunc.*;
 
 /**
  * Class for layer.
  */
-public class Layer {
+public class Layer implements Serializable {
     /** Type of activation function for this layer. */
     public AFType afType;
     /** Activation function of this layer. */
