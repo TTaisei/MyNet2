@@ -1,10 +1,10 @@
 import org.MyNet2.*;
-import org.MyNet2.af.*;
+import org.MyNet2.actFunc.*;
 
 public class AFTest {
     public static void main(String[] str){
         Matrix in = new Matrix(2, 3, 5.0);
-        Liner af = new Liner();
+        Tanh af = new Tanh();
         System.out.println(af.calc(in));
         System.out.println(af.diff(in));
     }
