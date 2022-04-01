@@ -1,4 +1,4 @@
-package org.MyNet2.AF;
+package org.MyNet.af;
 
 import org.MyNet2.*;
 

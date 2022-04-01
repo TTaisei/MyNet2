@@ -1,4 +1,4 @@
-package org.MyNet2.AF;
+package org.MyNet.af;
 
 import java.lang.Math;
 import org.MyNet2.*;

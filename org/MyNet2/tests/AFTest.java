@@ -1,5 +1,5 @@
 import org.MyNet2.*;
-import org.MyNet2.AF;
+import org.MyNet2.af.*;
 
 public class AFTest {
     public static void main(String[] str){
