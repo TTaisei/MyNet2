@@ -4,14 +4,14 @@ import java.lang.Math;
 import org.MyNet2.*;
 
 /**
- * ReLu function.
+ * ReLU function.
  */
-public class ReLu extends ActivationFunction {
+public class ReLU extends ActivationFunction {
     /**
      * Constructor for this class.
      * Nothing to do.
      */
-    public ReLu(){
+    public ReLU(){
         ;
     }
 
@@ -53,6 +53,6 @@ public class ReLu extends ActivationFunction {
 
     @Override
     public String toString(){
-        return "ReLu";
+        return "ReLU";
     }
 }

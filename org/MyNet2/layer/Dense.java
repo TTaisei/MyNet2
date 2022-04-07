@@ -71,8 +71,8 @@ public class Dense extends Layer {
         case SIGMOID:
             this.actFunc = new Sigmoid();
             break;
-        case RELU:
-            this.actFunc = new ReLu();
+        case ReLU:
+            this.actFunc = new ReLU();
             break;
         case TANH:
             this.actFunc = new Tanh();

@@ -4,7 +4,7 @@ import org.MyNet2.actFunc.*;
 
 public class LayerTest {
     public static void main(String[] str){
-        Dense layer = new Dense(5, 7, AFType.RELU);
+        Dense layer = new Dense(5, 7, AFType.ReLU);
         System.out.println(layer);
         for (int i = 0; i < layer.w.row; i++){
             for (int j = 0; j < layer.w.col; j++){
