@@ -14,7 +14,7 @@ public class Dense extends Layer {
     public int inNum;
     /** Number of nodes of this class. */
     public int nodesNum;
-    /** Liner transformed matrix. */
+    /** Linear transformed matrix. */
     public Matrix x;
     /** Matrix of output from this layer. */
     public Matrix a;
@@ -71,14 +71,14 @@ public class Dense extends Layer {
         case SIGMOID:
             this.actFunc = new Sigmoid();
             break;
-        case ReLU:
+        case RELU:
             this.actFunc = new ReLU();
             break;
         case TANH:
             this.actFunc = new Tanh();
             break;
-        case LINER:
-            this.actFunc = new Liner();
+        case LINEAR:
+            this.actFunc = new Linear();
             break;
         default:
             System.out.println("ERROR: The specified activation function is wrong");

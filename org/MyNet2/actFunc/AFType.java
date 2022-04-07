@@ -6,7 +6,7 @@ package org.MyNet2.actFunc;
  */
 public enum AFType {
     SIGMOID,
-    ReLU,
+    RELU,
     TANH,
-    LINER
+    LINEAR
 }

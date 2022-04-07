@@ -3,14 +3,14 @@ package org.MyNet2.actFunc;
 import org.MyNet2.*;
 
 /**
- * Liner function.
+ * Linear function.
  */
-public class Liner extends ActivationFunction {
+public class Linear extends ActivationFunction {
     /**
      * Constructor for this class.
      * Nothing to do.
      */
-    public Liner(){
+    public Linear(){
         ;
     }
 
@@ -38,6 +38,6 @@ public class Liner extends ActivationFunction {
 
     @Override
     public String toString(){
-        return "Liner";
+        return "Linear";
     }
 }
