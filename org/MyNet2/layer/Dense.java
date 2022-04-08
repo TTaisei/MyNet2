@@ -8,7 +8,7 @@ import org.MyNet2.actFunc.*;
  * Class for dense layer.
  */
 public class Dense extends Layer {
-    /** The list of weight of this layer. */
+    /** The list of weight for this layer. */
     public Matrix w;
     /** Number of inputs contain bias. */
     public int inNum;
@@ -87,6 +87,11 @@ public class Dense extends Layer {
         this.actFuncName = this.actFunc.toString();
     }
 
+    /**
+     * Doing forward propagation.
+     * @param in input matrix.
+     * @return Matrix instance of output.
+     */
     @Override
     public Matrix forward(Matrix in){
         Matrix in_ = in.appendCol(1.0);

@@ -56,8 +56,6 @@ public class Matrix {
      * @param row Number of row.
      * @param col Number of col.
      * @param rand Random instance.
-     * @param min Number of min for range.
-     * @param max Number of max for range.
      */
     public Matrix(int row, int col, Random rand){
         this.row = row;
