@@ -22,8 +22,8 @@ public class MaxPoolingTest {
         System.out.println(in);
         System.out.println();
 
-        int[] returnSize = {2, 3, 3, 3};
-        MaxPooling pool = new MaxPooling(1, 6, 6, 2, 2, returnSize);
+        int[] poolShape = {2, 2};
+        MaxPooling pool = new MaxPooling(shape, poolShape);
         System.out.println(pool.forward(in));
     }
 }

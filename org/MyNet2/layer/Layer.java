@@ -18,7 +18,7 @@ public class Layer implements Serializable {
     public String name = null;
 
     public void exit(String msg){
-        System.out.prntln(msg);
+        System.out.println(msg);
         System.exit(-1);
     }
 
