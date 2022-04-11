@@ -9,10 +9,16 @@ public class MaxPooling extends Pooling {
     /**
      * Constructor fot this challs.
      * @param channelNum Number of channel.
+     * @param inShape Shape of input.
      * @param poolSize Size of pooling matrix.
      */
-    public MaxPooling(int channelNum, int poolSize){
+    public MaxPooling(int channelNum, int[] inShape, int poolSize){
+        if (inShape.length != 2){
+            this.exit("inShape length is wrong.");
+        }
         this.channelNum = channelNum;
+        this.outRow = inShape[0] / poolSize;
+        this.outCol = inShape[1] / poolSize;
         this.poolSize = poolSize;
     }
 
@@ -22,28 +28,20 @@ public class MaxPooling extends Pooling {
      * @return Matrix instance of output.
      */
     @Override
-    public Matrix4d forward(Matrix4d in){
-        int batchSize = in.shape[0];
-        int rtnRow = in.shape[2] / this.poolSize;
-        int rtnCol = in.shape[3] / this.poolSize;
+    public Matrix forward(Matrix in){
+        int itr;
         double num, max;
 
-        Matrix4d rtn = new Matrix4d(
-            new int[]{
-                batchSize,
-                this.channelNum,
-                rtnRow,
-                rtnCol
-            }
-        );
-        for (int b = 0; b < batchSize; b++){
+        Matrix rtn = new Matrix(in.row, this.channelNum * this.outRow * this.outCol);
+        for (int b = 0; b < in.row; b++){
             for (int k = 0; k < this.channelNum; k++){
-                for (int i = 0; i < rtnRow; i++){
-                    for (int j = 0; j < rtnCol; j++){
+                for (int i = 0; i < this.outRow; i++){
+                    for (int j = 0; j < this.outCol; j++){
                         max = -100.0;
                         for (int p = 0; p < this.poolSize; p++){
                             for (int q = 0; q < this.poolSize; q++){
-                                num = in.matrix.get(b).matrix.get(k).matrix[this.poolSize*i+p][this.poolSize*j+q];
+                                itr = k*this.channelNum + (this.poolSize*i+p)*this.outRow + (this.poolSize*j+q);
+                                num = in.matrix[b][itr];
 
                                 if (num > max){
                                     max = num;
@@ -51,7 +49,7 @@ public class MaxPooling extends Pooling {
                             }
                         }
 
-                        rtn.matrix.get(b).matrix.get(k).matrix[i][j] = max;
+                        rtn.matrix[b][k*this.channelNum + i*this.outRow + j*this.outCol] = max;
                     }
                 }
             }

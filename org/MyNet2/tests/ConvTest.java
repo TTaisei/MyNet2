@@ -24,7 +24,7 @@ public class ConvTest {
         System.out.println(in);
         System.out.println();
 
-        Conv conv = new Conv(3, 4, 2, 2, AFType.RELU);
+        Conv conv = new Conv(3, 4, new int[]{6, 6}, new int[]{2, 2}, AFType.RELU);
         for (int i = 0; i < conv.kernelNum; i++){
             for (int j = 0; j < conv.channelNum; j++){
                 conv.w.matrix.get(i).matrix.set(j, new Matrix(2, 2, i * 0.1 - j * 0.2));

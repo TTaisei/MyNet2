@@ -25,7 +25,7 @@ public class Network implements Serializable {
 
     /**
      * Constructor for this class.
-     * CNN.
+     * Only CNN.
      * @param inShape Shape of input.
      * @param layers Each layers.
      */

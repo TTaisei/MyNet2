@@ -21,7 +21,7 @@ public class MaxPoolingTest {
         System.out.println(in);
         System.out.println();
 
-        MaxPooling pool = new MaxPooling(3, 2);
+        MaxPooling pool = new MaxPooling(3, new int[]{6, 6}, 2);
         System.out.println(pool.forward(in));
     }
 }

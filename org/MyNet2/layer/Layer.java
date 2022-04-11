@@ -40,15 +40,6 @@ public class Layer implements Serializable {
     }
 
     /**
-     * Doing forward propagation.
-     * @param in input matrix.
-     * @return Matrix4d instance of output.
-     */
-    public Matrix4d forward(Matrix4d in){
-        return in.clone();
-    }
-
-    /**
      * Doing back propagation.
      */
     public void back(){

@@ -1,6 +1,8 @@
 package org.MyNet2.layer;
 
 import java.util.Random;
+import java.util.concurrent.locks.ReentrantLock;
+
 import org.MyNet2.*;
 import org.MyNet2.actFunc.*;
 
@@ -9,7 +11,7 @@ import org.MyNet2.actFunc.*;
  */
 public class Conv extends Layer {
     /** The list of weight for this layer */
-    public Matrix4d w;
+    public Matrix w;
     /** Number of chanel. */
     public int channelNum;
     /** Number of kernel. */
@@ -18,48 +20,58 @@ public class Conv extends Layer {
     public int wRow;
     /** Column of weight matrix. */
     public int wCol;
+    /** Row of output. */
+    public int outRow;
+    /** Column of output. */
+    public int outCol;
 
     /**
      * Constructor for this class.
      * @param channelNum Number of channel.
      * @param kernelNum Number of kernel.
-     * @param wRow Row of weight matrix.
-     * @param wCol Column of input weight matrix.
+     * @param inShape Shape of input.
+     * @param wShape Shape of weight matrix.
      * @param afType Type of activation fucntion for this layer.
      */
-    public Conv(int channelNum, int kernelNum, int wRow, int wCol, AFType afType){
-        this.setup(channelNum, kernelNum, wRow, wCol, 0, afType);
+    public Conv(int channelNum, int kernelNum, int[] inShape, int[] wShape, AFType afType){
+        this.setup(channelNum, kernelNum, inShape, wShape, 0, afType);
     }
 
     /**
      * Constructor for this class.
      * @param channelNum Number of channel.
      * @param kernelNum Number of kernel.
-     * @param wRow Row of input weight matrix.
-     * @param wCol Column of input weight matrix.
+     * @param inShape Shape of input.
+     * @param wShape Shape of weight matrix.
      * @param seed Number of seed for random class.
      * @param afType Type of activation fucntion for this layer.
      */
-    public Conv(int channelNum, int kernelNum, int wRow, int wCol, long seed, AFType afType){
-        this.setup(channelNum, kernelNum, wRow, wCol, seed, afType);
+    public Conv(int channelNum, int kernelNum, int[] inShape, int[] wShape, long seed, AFType afType){
+        this.setup(channelNum, kernelNum, inShape, wShape, seed, afType);
     }
 
     /**
      * Construct instead of constructor.
      * @param channelNum Number of channel.
      * @param kernelNum Number of kernel.
-     * @param wRow Row of input weight matrix.
-     * @param wCol Column of input weight matrix.
+     * @param inShape Shape of input.
+     * @param wShape Shape of weight matrix.
      * @param seed Number of seed for random class.
      * @param afType Type of activation fucntion for this layer.
      */
-    protected void setup(int channelNum, int kernelNum, int wRow, int wCol, long seed, AFType afType){
+    protected void setup(int channelNum, int kernelNum, int[] inShape, int[] wShape, long seed, AFType afType){
+        if (inShape.length != 2){
+            this.exit("inShape length is wrong.");
+        }else if (wShape.length != 2){
+            this.exit("wShape length is wrong.");
+        }
+
         this.channelNum = channelNum;
         this.kernelNum = kernelNum;
-        this.wRow = wRow;
-        this.wCol = wCol;
+        this.outRow = inShape[0] - wShape[0] + 1;
+        this.outCol = inShape[1] - wShape[1] + 1;
 
-        this.w = new Matrix4d(new int[]{kernelNum, channelNum, wRow, wCol}, new Random(seed));
+        this.w = new Matrix(kernelNum, channelNum * wRow * wCol, new Random(seed));
 
         this.afType = afType;
         switch (afType){
@@ -85,42 +97,31 @@ public class Conv extends Layer {
     /**
      * Doing forward propagation.
      * @param in input matrix.
-     * @return Matrix4d instance of output.
+     * @return Matrix instance of output.
      */
     @Override
-    public Matrix4d forward(Matrix4d in){
-        int batchSize = in.shape[0];
-        int rtnRow = in.shape[2] - this.w.shape[2] + 1;
-        int rtnCol = in.shape[3] - this.w.shape[3] + 1;
+    public Matrix forward(Matrix in){
 
-        Matrix4d rtn = new Matrix4d(
-            new int[]{
-                batchSize,
-                this.kernelNum,
-                rtnRow,
-                rtnCol
-            }
-        );
-        for (int b = 0; b < batchSize; b++){
+        Matrix rtn = new Matrix(in.row, this.kernelSize * this.outRow * this.outCol);
+        for (int b = 0; b < in.row; b++){
             for (int k = 0; k < this.kernelNum; k++){
-                for (int i = 0; i < rtnRow; i++){
-                    for (int j = 0; j < rtnCol; j++){
+                for (int i = 0; i < this.outRow; i++){
+                    for (int j = 0; j < this.outCol; j++){
                         for (int c = 0; c < this.channelNum; c++){
                             for (int p = 0; p < this.wRow; p++){
                                 for (int q = 0; q < this.wCol; q++){
-                                    rtn.matrix.get(b).matrix.get(k).matrix[i][j] += 
-                                        this.w.matrix.get(k).matrix.get(c).matrix[p][q] * in.matrix.get(b).matrix.get(c).matrix[i+p][j+q];
+                                    rtn.matrix[b][k*this.kernelNum + i*this.outRow + j] +=
+                                        this.w.matrix[k][c*this.channelNum + p*this.wRow + q]
+                                        * in.matrix[b][c*this.channelNum + (i+p)*this.wRow + (j+q)];
                                 }
                             }
                         }
-
-                        rtn.matrix.get(b).matrix.set(k, this.actFunc.calc(rtn.matrix.get(b).matrix.get(k)));
                     }
                 }
             }
         }
 
-        return rtn;
+        return this.actFunc.calc(rtn);
     }
 
     @Override
