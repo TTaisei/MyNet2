@@ -1,5 +1,6 @@
 package org.MyNet2.layer;
 
+import java.util.Random;
 import org.MyNet2.*;
 import org.MyNet2.actFunc.*;
 
@@ -107,15 +108,19 @@ public class Conv extends Layer {
                         for (int c = 0; c < this.channelNum; c++){
                             for (int p = 0; p < this.wRow; p++){
                                 for (int q = 0; q < this.wCol; q++){
-                                    rtn.matrix.get(b).matrix.get(k).matrix[i][j] = 
-                                        this.w.matrix.get(k).matrix.get(c).matrix[]
+                                    rtn.matrix.get(b).matrix.get(k).matrix[i][j] += 
+                                        this.w.matrix.get(k).matrix.get(c).matrix[p][q] * in.matrix.get(b).matrix.get(c).matrix[i+p][j+q];
                                 }
                             }
                         }
+
+                        rtn.matrix.get(b).matrix.set(k, this.actFunc.calc(rtn.matrix.get(b).matrix.get(k)));
                     }
                 }
             }
         }
+
+        return rtn;
     }
 
     @Override
