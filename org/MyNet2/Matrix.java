@@ -513,6 +513,59 @@ public class Matrix {
         return rtn;
     }
 
+    /**
+     * Make a 4 dimentional matrix from this 2 dimentional matrix.
+     * @param shape Shape of 4 dimentional matrix.
+     * @return 2 dimentional matrix.
+     */
+    public Matrix4d toMatrix4d(int[] shape){
+        if (shape.length != 4){
+            this.exit("shape is wrong.");
+        }else if(shape[0] != this.row){
+            this.exit("row number is wrong.");
+        }
+
+        Matrix4d rtn = new Matrix4d(shape);
+        for (int i = 0; i < shape[0]; i++){
+            for (int j = 0; j < shape[1]; j++){
+                for (int k = 0; k < shape[2]; k++){
+                    for (int l = 0; l < shape[3]; l++){
+                        rtn.matrix.get(i).matrix.get(j).matrix[k][l] = this.matrix[i][j*shape[1] + k*shape[2] + l];
+                    }
+                }
+            }
+        }
+
+        return rtn;
+    }
+
+    /**
+     * Make a 4 dimentional matrix from this 2 dimentional matrix.
+     * @param shape0 Shape of 4 dimentional matrix.
+     * @param shape1 Shape of 4 dimentional matrix.
+     * @param shape2 Shape of 4 dimentional matrix.
+     * @param shape3 Shape of 4 dimentional matrix.
+     * @return 2 dimentional matrix.
+     */
+    public Matrix4d toMatrix4d(int shape0, int shape1, int shape2, int shape3){
+        if(shape0 != this.row){
+            this.exit("row number is wrong.");
+        }
+
+        Matrix4d rtn = new Matrix4d(new int[]{shape0, shape1, shape2, shape3});
+        for (int i = 0; i < shape0; i++){
+            for (int j = 0; j < shape1; j++){
+                for (int k = 0; k < shape2; k++){
+                    for (int l = 0; l < shape3; l++){
+                        rtn.matrix.get(i).matrix.get(j).matrix[k][l] = this.matrix[i][j*shape1 + k*shape2 + l];
+                    }
+                }
+            }
+        }
+
+        return rtn;
+    }
+
     @Override
     public String toString(){
         String str = "[";

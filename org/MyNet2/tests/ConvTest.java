@@ -25,13 +25,16 @@ public class ConvTest {
         System.out.println();
 
         Conv conv = new Conv(3, 4, new int[]{6, 6}, new int[]{2, 2}, AFType.RELU);
+        Matrix4d w = new Matrix4d(new int[]{4, 3, 2, 2});
         for (int i = 0; i < conv.kernelNum; i++){
             for (int j = 0; j < conv.channelNum; j++){
-                conv.w.matrix.get(i).matrix.set(j, new Matrix(2, 2, i * 0.1 - j * 0.2));
-                System.out.println(conv.w.matrix.get(i).matrix.get(j));
+                w.matrix.get(i).matrix.set(j, new Matrix(2, 2, i * 0.1 - j * 0.2));
+                System.out.println(w.matrix.get(i).matrix.get(j));
             }
             System.out.println();
         }
-        System.out.println(conv.forward(in));
+        conv.w = w.flatten();
+        Matrix out = conv.forward(in.flatten());
+        System.out.println(out.toMatrix4d(2, 4, 5, 5));
     }
 }

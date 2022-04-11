@@ -102,7 +102,7 @@ public class Conv extends Layer {
     @Override
     public Matrix forward(Matrix in){
 
-        Matrix rtn = new Matrix(in.row, this.kernelSize * this.outRow * this.outCol);
+        Matrix rtn = new Matrix(in.row, this.kernelNum * this.outRow * this.outCol);
         for (int b = 0; b < in.row; b++){
             for (int k = 0; k < this.kernelNum; k++){
                 for (int i = 0; i < this.outRow; i++){

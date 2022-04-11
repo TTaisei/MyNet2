@@ -22,6 +22,7 @@ public class MaxPoolingTest {
         System.out.println();
 
         MaxPooling pool = new MaxPooling(3, new int[]{6, 6}, 2);
-        System.out.println(pool.forward(in));
+        Matrix out = pool.forward(in.flatten());
+        System.out.println(out.toMatrix4d(2, 3, 3, 3));
     }
 }
