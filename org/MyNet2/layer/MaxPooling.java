@@ -2,10 +2,55 @@ package org.MyNet2.layer;
 
 import org.MyNet2.*;
 
+// 変数名変えたから修正するところから
+
 /**
  * Class for max pooling layer.
  */
 public class MaxPooling extends Pooling {
+    /**
+     * Constructor for this class.
+     * @param inShape Input matrix shape.
+     * @param poolShape pooling matrix shape.
+     */
+    public MaxPooling(int[] inShape, int[] poolShape){
+        this.setup(inShape, poolShape, 1);
+    }
+
+    /**
+     * Constructor for this class.
+     * @param inShape Input matrix shape.
+     * @param poolShape pooling matrix shape.
+     * @param stride Number of stride.
+     */
+    public MaxPooling(int[] inShape, int[] poolShape, int stride){
+        this.setup(inShape, poolShape, stride);
+    }
+
+    /**
+     * Construct instead of constructor.
+     * @param inShape Input matrix shape.
+     * @param poolShape pooling matrix shape.
+     * @param stride Number of stride.
+     */
+    protected void setup(int[] inShape, int[] poolShape, int stride){
+        if (inShape.length != 4){
+            this.exit("inShape length is wrong.");
+        }else if (poolShape.length != 2){
+            this.exit("poolShape length is wrong.");
+        }
+
+        this.inShape = inShape;
+        this.poolShape = poolShape;
+        this.outShape = new int[]{
+            this.inShape[0],
+            this.inshape[1],
+            this.inshape[2] / this.poolShape[0] / stride,
+            this.inshape[3] / this.poolShape[1] / stride
+        };
+        this.stride = stride;
+    }
+
     /**
      * Constructor for this class.
      * @param poolRow Row of max pooling.

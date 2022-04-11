@@ -6,20 +6,14 @@ import org.MyNet2.*;
  * Class for pooling layer.
  */
 public class Pooling extends Layer {
-    /** Number of channel. */
-    public int channelNum;
-    /** Row of input picture. */
-    public int inRow;
-    /** Column of input picture. */
-    public int inCol;
-    /** Row of pooling. */
-    public int poolRow;
-    /** Column of pooling. */
-    public int poolCol;
+    /** Input matrix shape. */
+    public int[] inShape;
+    /** Pooling matrix shape. */
+    public int[] poolShape;
     /** Number of stride. */
     public int stride;
     /** Size of return matrix. */
-    public int[] returnSize;
+    public int[] outShape;
 
     public Pooling(){
         ;

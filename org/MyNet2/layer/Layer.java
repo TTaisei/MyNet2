@@ -17,6 +17,11 @@ public class Layer implements Serializable {
     /** Name of this layer */
     public String name = null;
 
+    public void exit(String msg){
+        System.out.prntln(msg);
+        System.exit(-1);
+    }
+
     /**
      * Constructor for this class.
      * Nothing to do.
@@ -24,7 +29,6 @@ public class Layer implements Serializable {
     public Layer(){
         ;
     }
-
 
     /**
      * Doing forward propagation.
