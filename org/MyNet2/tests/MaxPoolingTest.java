@@ -3,8 +3,7 @@ import org.MyNet2.layer.*;
 
 public class MaxPoolingTest {
     public static void main(String[] str){
-        int[] shape = {2, 3, 6, 6};
-        Matrix4d in = new Matrix4d(shape);
+        Matrix4d in = new Matrix4d(new int[]{2, 3, 6, 6});
         Matrix m = new Matrix(6, 6);
 
         for (int i = 0; i < m.row; i++){
@@ -22,8 +21,7 @@ public class MaxPoolingTest {
         System.out.println(in);
         System.out.println();
 
-        int[] poolShape = {2, 2};
-        MaxPooling pool = new MaxPooling(shape, poolShape);
+        MaxPooling pool = new MaxPooling(3, 2);
         System.out.println(pool.forward(in));
     }
 }
