@@ -92,4 +92,50 @@ public class Matrix4d {
 
         return rtn;
     }
+
+    @Override
+    public String toString(){
+        String rtn = "[";
+        int j, k;
+
+        for (int i = 0; i < this.shape[0]; i++){
+            if (i == 0){
+                rtn += "[";
+            }else{
+                rtn += "\n [";
+            }
+            j = 0;
+            for (Matrix matrix: this.matrix.get(i).matrix){
+                if (j == 0){
+                    rtn += "[";
+                }else{
+                    rtn += "\n  [";
+                }
+                j++;
+                k = 0;
+                for (double[] ele: matrix.matrix){
+                    if (k == 0){
+                        rtn += "[";
+                    }else{
+                        rtn += "\n   [";
+                    }
+                    k++;
+                    for (double num: ele){
+                        if (num < 0){
+                            rtn += String.format("%.4f ", num);
+                        }else{
+                            rtn += String.format(" %.4f ", num);
+                        }
+                    }
+                    rtn += "]";
+                }
+                rtn += "]";
+            }
+            rtn += "]";
+        }
+
+        rtn += "]\n";
+
+        return rtn;
+    }
 }

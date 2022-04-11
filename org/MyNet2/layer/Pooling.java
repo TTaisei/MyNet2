@@ -6,10 +6,20 @@ import org.MyNet2.*;
  * Class for pooling layer.
  */
 public class Pooling extends Layer {
-    /** row of max pooling. */
+    /** Number of channel. */
+    public int channelNum;
+    /** Row of input picture. */
+    public int inRow;
+    /** Column of input picture. */
+    public int inCol;
+    /** Row of pooling. */
     public int poolRow;
-    /** Column of max pooling. */
+    /** Column of pooling. */
     public int poolCol;
+    /** Number of stride. */
+    public int stride;
+    /** Size of return matrix. */
+    public int[] returnSize;
 
     public Pooling(){
         ;
@@ -27,7 +37,7 @@ public class Pooling extends Layer {
             for (int j = 0; j < in.shape[1]; j++){
                 for (int k = 0; k < in.shape[2]; k++){
                     for (int l = 0; l < in.shape[3]; l++){
-                        rtn.matrix[i][j*in.shape[1]+k*in.shape[2]+l] = in.get(i).get(j).matrix[k][l];
+                        rtn.matrix[i][j*in.shape[1]+k*in.shape[2]+l] = in.matrix.get(i).matrix.get(j).matrix[k][l];
                     }
                 }
             }
@@ -41,6 +51,7 @@ public class Pooling extends Layer {
      * @param in input matrix.
      * @return Matrix instance of output.
      */
+    @Override
     public Matrix4d forward(Matrix4d in){
         return in.clone();
     }
@@ -49,7 +60,7 @@ public class Pooling extends Layer {
      * Doing back propagation.
      */
     @Override
-    public Matrix4d back(){
+    public void back(){
         ;
     }
 }

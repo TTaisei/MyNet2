@@ -2,7 +2,7 @@ import org.MyNet2.*;
 import org.MyNet2.layer.*;
 import org.MyNet2.actFunc.*;
 
-public class LayerTest {
+public class DenseTest {
     public static void main(String[] str){
         Dense layer = new Dense(5, 7, AFType.RELU);
         System.out.println(layer);
