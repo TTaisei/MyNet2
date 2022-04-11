@@ -22,7 +22,7 @@ public class MaxPoolingTest {
         System.out.println(in);
         System.out.println();
 
-        int[] returnSize = {2, 2, 3, 3};
+        int[] returnSize = {2, 3, 3, 3};
         MaxPooling pool = new MaxPooling(1, 6, 6, 2, 2, returnSize);
         System.out.println(pool.forward(in));
     }

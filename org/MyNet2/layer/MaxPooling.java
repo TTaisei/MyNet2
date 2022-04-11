@@ -68,13 +68,13 @@ public class MaxPooling extends Pooling {
         double num, max;
 
         for (int b = 0; b < in.shape[0]; b++){
-            for (int k = 0; k < this.channelNum; k++){
+            for (int k = 0; k < in.shape[1]; k++){
                 for (int i = 0; i < rtn.shape[2]; i++){
                     for (int j = 0; j < rtn.shape[3]; j++){
                         max = -100.0;
                         for (int p = 0; p < this.poolRow; p++){
                             for (int q = 0; q < this.poolCol; q++){
-                                num = in.matrix.get(b).matrix.get(k).matrix[i+p][j+q];
+                                num = in.matrix.get(b).matrix.get(k).matrix[this.poolRow*i+p][this.poolCol*j+q];
 
                                 if (num > max){
                                     max = num;
