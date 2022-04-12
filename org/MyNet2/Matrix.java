@@ -524,13 +524,14 @@ public class Matrix {
         }else if(shape[0] != this.row){
             this.exit("row number is wrong.");
         }
+        int jMult = shape[2] * shape[3];
 
         Matrix4d rtn = new Matrix4d(shape);
         for (int i = 0; i < shape[0]; i++){
             for (int j = 0; j < shape[1]; j++){
                 for (int k = 0; k < shape[2]; k++){
                     for (int l = 0; l < shape[3]; l++){
-                        rtn.matrix.get(i).matrix.get(j).matrix[k][l] = this.matrix[i][j*shape[1] + k*shape[2] + l];
+                        rtn.matrix.get(i).matrix.get(j).matrix[k][l] = this.matrix[i][j*jMult + k*shape[3] + l];
                     }
                 }
             }
@@ -551,13 +552,14 @@ public class Matrix {
         if(shape0 != this.row){
             this.exit("row number is wrong.");
         }
+        int jMult = shape2 * shape3;
 
         Matrix4d rtn = new Matrix4d(new int[]{shape0, shape1, shape2, shape3});
         for (int i = 0; i < shape0; i++){
             for (int j = 0; j < shape1; j++){
                 for (int k = 0; k < shape2; k++){
                     for (int l = 0; l < shape3; l++){
-                        rtn.matrix.get(i).matrix.get(j).matrix[k][l] = this.matrix[i][j*shape1 + k*shape2 + l];
+                        rtn.matrix.get(i).matrix.get(j).matrix[k][l] = this.matrix[i][j*jMult + k*shape3 + l];
                     }
                 }
             }

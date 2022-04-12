@@ -6,6 +6,10 @@ import org.MyNet2.*;
  * Class for pooling layer.
  */
 public class Pooling extends Layer {
+    /** Row of input. */
+    public int inRow;
+    /** Column of input. */
+    public int inCol;
     /** Row of output. */
     public int outRow;
     /** Column of output. */

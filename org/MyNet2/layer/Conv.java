@@ -20,6 +20,10 @@ public class Conv extends Layer {
     public int wRow;
     /** Column of weight matrix. */
     public int wCol;
+    /** Row of input. */
+    public int inRow;
+    /** Column of input. */
+    public int inCol;
     /** Row of output. */
     public int outRow;
     /** Column of output. */
@@ -68,8 +72,12 @@ public class Conv extends Layer {
 
         this.channelNum = channelNum;
         this.kernelNum = kernelNum;
+        this.inRow = inShape[0];
+        this.inCol = inShape[1];
         this.outRow = inShape[0] - wShape[0] + 1;
         this.outCol = inShape[1] - wShape[1] + 1;
+        this.wRow = wShape[0];
+        this.wCol = wShape[1];
 
         this.w = new Matrix(kernelNum, channelNum * wRow * wCol, new Random(seed));
 
@@ -101,6 +109,9 @@ public class Conv extends Layer {
      */
     @Override
     public Matrix forward(Matrix in){
+        int kMult = this.outRow * this.outCol;
+        int cWMult = this.wRow * this.wCol;
+        int cInMult = this.inRow * this.inCol;
 
         Matrix rtn = new Matrix(in.row, this.kernelNum * this.outRow * this.outCol);
         for (int b = 0; b < in.row; b++){
@@ -110,9 +121,10 @@ public class Conv extends Layer {
                         for (int c = 0; c < this.channelNum; c++){
                             for (int p = 0; p < this.wRow; p++){
                                 for (int q = 0; q < this.wCol; q++){
-                                    rtn.matrix[b][k*this.kernelNum + i*this.outRow + j] +=
-                                        this.w.matrix[k][c*this.channelNum + p*this.wRow + q]
-                                        * in.matrix[b][c*this.channelNum + (i+p)*this.wRow + (j+q)];
+                                    rtn.matrix[b][k*kMult + i*this.outCol + j] +=
+                                        this.w.matrix[k][c*cWMult + p*this.wCol + q]
+                                        * in.matrix[b][c*cInMult + (i+p)*this.inCol + (j+q)];
+                                    System.out.printf("%d,%d,%d,%d,%d,%d,%d\t%2.4f,%2.4f\n", b,k,i,j,c,p,q, this.w.matrix[k][c*cWMult + p*this.wCol + q], in.matrix[b][c*cInMult + (i+p)*this.inCol + (j+q)]);
                                 }
                             }
                         }

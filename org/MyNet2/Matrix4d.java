@@ -88,12 +88,13 @@ public class Matrix4d {
      */
     public Matrix flatten(){
         Matrix rtn = new Matrix(this.shape[0], this.shape[1]*this.shape[2]*this.shape[3]);
+        int jMult = this.shape[2] * this.shape[3];
 
         for (int i = 0; i < rtn.row; i++){
             for (int j = 0; j < this.shape[1]; j++){
                 for (int k = 0; k < this.shape[2]; k++){
                     for (int l = 0; l < this.shape[3]; l++){
-                        rtn.matrix[i][j*this.shape[1]+k*this.shape[2]+l] = this.matrix.get(i).matrix.get(j).matrix[k][l];
+                        rtn.matrix[i][j*jMult + k*this.shape[3] + l] = this.matrix.get(i).matrix.get(j).matrix[k][l];
                     }
                 }
             }
