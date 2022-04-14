@@ -22,7 +22,17 @@ public class Network implements Serializable {
         this.layers = layers;
 
         for (Layer layer: this.layers){
-
+            switch (layer.name){
+            case "Dense":
+                break;
+            case "Conv":
+                break;
+            case "MaxPooling":
+                break;
+            default:
+                System.out.println("layer error");
+                System.exit(-1);
+            }
         }
     }
 
