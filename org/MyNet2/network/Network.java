@@ -15,23 +15,14 @@ public class Network implements Serializable {
 
     /**
      * Constructor for this class.
-     * Only Dense layer.
      * @param inNum Number of input.
      * @param layers Each layers.
      */
     public Network(int inNum, Layer ... layers){
         this.layers = layers;
-    }
 
-    /**
-     * Constructor for this class.
-     * Only CNN.
-     * @param inShape Shape of input.
-     * @param layers Each layers.
-     */
-    public Network(int[] inShape, Layer ... layers){
-        if (inShape.length != 2 || inShape.length != 4){
-            this.exit("inShape length is wrong.");
+        for (Layer layer: this.layers){
+
         }
     }
 

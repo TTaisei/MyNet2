@@ -100,6 +100,8 @@ public class Conv extends Layer {
             System.exit(-1);
         }
         this.actFuncName = this.actFunc.toString();
+
+        this.name = "Conv";
     }
 
     /**

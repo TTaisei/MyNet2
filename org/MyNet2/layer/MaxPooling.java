@@ -22,6 +22,7 @@ public class MaxPooling extends Pooling {
         this.outRow = inShape[0] / poolSize;
         this.outCol = inShape[1] / poolSize;
         this.poolSize = poolSize;
+        this.name = "MaxPooling";
     }
 
     /**
