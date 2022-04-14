@@ -7,7 +7,15 @@ import org.MyNet2.*;
  */
 public class MaxPooling extends Pooling {
     /**
-     * Constructor fot this challs.
+     * Constructor for this class.
+     * @param poolSize Size of pooling matrix.
+     */
+    public MaxPooling(int poolSize){
+        this.poolSize = poolSize;
+    }
+
+    /**
+     * Constructor fot this class.
      * @param channelNum Number of channel.
      * @param inShape Shape of input.
      * @param poolSize Size of pooling matrix.
@@ -16,13 +24,13 @@ public class MaxPooling extends Pooling {
         if (inShape.length != 2){
             this.exit("inShape length is wrong.");
         }
+        this.name = "MaxPooling";
         this.channelNum = channelNum;
         this.inRow = inShape[0];
         this.inCol = inShape[1];
         this.outRow = inShape[0] / poolSize;
         this.outCol = inShape[1] / poolSize;
         this.poolSize = poolSize;
-        this.name = "MaxPooling";
     }
 
     /**

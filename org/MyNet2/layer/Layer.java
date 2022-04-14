@@ -8,6 +8,8 @@ import org.MyNet2.actFunc.*;
  * Class for layer.
  */
 public class Layer implements Serializable {
+    /** The list of weight for this layer */
+    public Matrix w;
     /** Type of activation function for this layer. */
     public AFType afType;
     /** Activation function of this layer. */
@@ -16,6 +18,17 @@ public class Layer implements Serializable {
     public String actFuncName;
     /** Name of this layer */
     public String name = null;
+
+    /** Number of channel. */
+    public int channelNum;
+    /** Number of kernel. */
+    public int kernelNum;
+    /** Row of output. */
+    public int outRow;
+    /** Column of output. */
+    public int outCol;
+    /** Number of nodes for this layer. */
+    public int nodesNum;
 
     public void exit(String msg){
         System.out.println(msg);
@@ -27,6 +40,17 @@ public class Layer implements Serializable {
      * Nothing to do.
      */
     public Layer(){
+        ;
+    }
+
+    /**
+     * Construct instead of constructor.
+     * @param inNum Number of inputs don't contain bias.
+     * @param nodesNum Number of nodes of this class.
+     * @param afType Type of activation function for this layer.
+     * @param seed Number of seed for random class.
+     */
+    public void setup(int inNum, int nodesNum, AFType afType, long seed){
         ;
     }
 

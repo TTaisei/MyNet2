@@ -10,14 +10,8 @@ public class Pooling extends Layer {
     public int inRow;
     /** Column of input. */
     public int inCol;
-    /** Row of output. */
-    public int outRow;
-    /** Column of output. */
-    public int outCol;
     /** Pooling matrix size. */
     public int poolSize;
-    /** Number of channel. */
-    public int channelNum;
 
     public Pooling(){
         ;

@@ -12,7 +12,14 @@ import org.MyNet2.actFunc.*;
 public class Conv extends Layer {
     /** The list of weight for this layer */
     public Matrix w;
-    /** Number of chanel. */
+    /** Type of activation function for this layer. */
+    public AFType afType;
+    /** Activation function of this layer. */
+    public ActivationFunction actFunc;
+    /** Name of this layer's activation function. */
+    public String actFuncName;
+
+    /** Number of channel. */
     public int channelNum;
     /** Number of kernel. */
     public int kernelNum;
@@ -31,6 +38,22 @@ public class Conv extends Layer {
 
     /**
      * Constructor for this class.
+     * @param kernelNum Number of kernel.
+     * @param wShape Shape of weight matrix.
+     * @param afType Type of activation fucntion for this layer.
+     */
+    public Conv(int kernelNum, int[] wShape, AFType afType){
+        if (wShape.length != 2){
+            this.exit("wShape length is wrong");
+        }
+        this.kernelNum = kernelNum;
+        this.wRow = wShape[0];
+        this.wCol = wShape[1];
+        this.afType = afType;
+    }
+
+    /**
+     * Constructor for this class.
      * @param channelNum Number of channel.
      * @param kernelNum Number of kernel.
      * @param inShape Shape of input.
@@ -38,7 +61,7 @@ public class Conv extends Layer {
      * @param afType Type of activation fucntion for this layer.
      */
     public Conv(int channelNum, int kernelNum, int[] inShape, int[] wShape, AFType afType){
-        this.setup(channelNum, kernelNum, inShape, wShape, 0, afType);
+        this.setup(channelNum, kernelNum, inShape, wShape, afType, 0);
     }
 
     /**
@@ -50,8 +73,8 @@ public class Conv extends Layer {
      * @param seed Number of seed for random class.
      * @param afType Type of activation fucntion for this layer.
      */
-    public Conv(int channelNum, int kernelNum, int[] inShape, int[] wShape, long seed, AFType afType){
-        this.setup(channelNum, kernelNum, inShape, wShape, seed, afType);
+    public Conv(int channelNum, int kernelNum, int[] inShape, int[] wShape, AFType afType, long seed){
+        this.setup(channelNum, kernelNum, inShape, wShape, afType, seed);
     }
 
     /**
@@ -63,12 +86,13 @@ public class Conv extends Layer {
      * @param seed Number of seed for random class.
      * @param afType Type of activation fucntion for this layer.
      */
-    protected void setup(int channelNum, int kernelNum, int[] inShape, int[] wShape, long seed, AFType afType){
+    protected void setup(int channelNum, int kernelNum, int[] inShape, int[] wShape, AFType afType, long seed){
         if (inShape.length != 2){
             this.exit("inShape length is wrong.");
         }else if (wShape.length != 2){
             this.exit("wShape length is wrong.");
         }
+        this.name = "Conv";
 
         this.channelNum = channelNum;
         this.kernelNum = kernelNum;
@@ -100,8 +124,6 @@ public class Conv extends Layer {
             System.exit(-1);
         }
         this.actFuncName = this.actFunc.toString();
-
-        this.name = "Conv";
     }
 
     /**
@@ -126,7 +148,6 @@ public class Conv extends Layer {
                                     rtn.matrix[b][k*kMult + i*this.outCol + j] +=
                                         this.w.matrix[k][c*cWMult + p*this.wCol + q]
                                         * in.matrix[b][c*cInMult + (i+p)*this.inCol + (j+q)];
-                                    System.out.printf("%d,%d,%d,%d,%d,%d,%d\t%2.4f,%2.4f\n", b,k,i,j,c,p,q, this.w.matrix[k][c*cWMult + p*this.wCol + q], in.matrix[b][c*cInMult + (i+p)*this.inCol + (j+q)]);
                                 }
                             }
                         }

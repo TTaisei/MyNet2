@@ -10,10 +10,14 @@ import org.MyNet2.actFunc.*;
 public class Dense extends Layer {
     /** The list of weight for this layer. */
     public Matrix w;
+    /** Activation function of this layer. */
+    public ActivationFunction actFunc;
+    /** Name of this layer's activation function. */
+    public String actFuncName;
+
     /** Number of inputs contain bias. */
     public int inNum;
-    /** Number of nodes of this class. */
-    public int nodesNum;
+    
     /** Linear transformed matrix. */
     public Matrix x;
     /** Matrix of output from this layer. */
@@ -58,7 +62,7 @@ public class Dense extends Layer {
      * @param afType Type of activation function for this layer.
      * @param seed Number of seed for random class.
      */
-    protected void setup(int inNum, int nodesNum, AFType afType, long seed){
+    public void setup(int inNum, int nodesNum, AFType afType, long seed){
         this.name = "Dense";
         this.inNum = inNum + 1;
         this.nodesNum = nodesNum;
