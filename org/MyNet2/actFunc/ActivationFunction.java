@@ -1,12 +1,13 @@
 package org.MyNet2.actFunc;
 
+import java.io.Serializable;
 import org.MyNet2.*;
 
 /**
  * Activation function's base class.
  * All activation functions must extend this class.
  */
-public class ActivationFunction {
+public class ActivationFunction implements Serializable {
     /**
      * Constructor for this class.
      * Nothing to do.

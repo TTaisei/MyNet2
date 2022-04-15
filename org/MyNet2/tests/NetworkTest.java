@@ -17,5 +17,10 @@ public class NetworkTest {
         );
         net.summary();
         System.out.println(net.forward(in.flatten()));
+        net.save("NetworkTest.net");
+
+        Network netLoaded = Network.load("NetworkTest.net");
+        netLoaded.summary();
+        System.out.println(netLoaded.forward(in.flatten()));
     }
 }

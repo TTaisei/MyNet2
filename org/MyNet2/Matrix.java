@@ -1,5 +1,6 @@
 package org.MyNet2;
 
+import java.io.Serializable;
 import java.lang.Math;
 import java.util.ArrayList;
 import java.util.Random;
@@ -7,7 +8,7 @@ import java.util.Random;
 /**
  * Class for two dimentional matrix.
  */
-public class Matrix {
+public class Matrix implements Serializable {
     /** Value of this matrix. */
     public double[][] matrix;
     /** Row and col of this matrix. */

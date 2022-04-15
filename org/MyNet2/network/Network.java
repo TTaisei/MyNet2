@@ -1,6 +1,7 @@
 package org.MyNet2.network;
 
-import java.io.Serializable;
+import java.io.*;
+import java.util.*;
 import org.MyNet2.*;
 import org.MyNet2.layer.*;
 
@@ -24,6 +25,7 @@ public class Network implements Serializable {
 
     /**
      * Constructor for this class.
+     * Only dense layer.
      * @param seed Seed of random.
      * @param inNum Number of input.
      * @param layers Each layers.
@@ -34,6 +36,7 @@ public class Network implements Serializable {
 
     /**
      * Constructor for this class.
+     * Only dense layer.
      * @param inNum Number of input.
      * @param layers Each layers.
      */
@@ -142,7 +145,7 @@ public class Network implements Serializable {
                 this.exit("layer error");
             }
         }
-    }    
+    }
 
     /**
      * Doing forward propagation.
@@ -157,6 +160,102 @@ public class Network implements Serializable {
         }
 
         return rtn;
+    }
+
+    /**
+     * Save this network to one file.
+     * @param name Name of save file.
+     */
+    public void save(String name){
+        try (
+            FileOutputStream fos = new FileOutputStream(name);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+        ){
+            oos.writeObject(this);
+            oos.flush();
+        }catch (IOException e){
+            System.out.println("IOException");
+            System.exit(-1);
+        }
+    }
+
+    /**
+     * Load a network from the file.
+     * @param name Name of load file.
+     */
+    public static Network load(String name){
+        Network loadNet = null;
+        try (
+            FileInputStream fis = new FileInputStream(name);
+            ObjectInputStream ois = new ObjectInputStream(fis);
+        ){
+            loadNet = (Network)ois.readObject();
+            if (Network.versionHasProblem(loadNet)){
+                System.exit(-1);
+            }else{
+                ;
+            }
+        }catch (IOException e){
+            System.out.println("IOException");
+            System.exit(-1);
+        }catch (ClassNotFoundException e){
+            System.out.println("ClassNotFoundException");
+            System.exit(-1);
+        }
+
+        return loadNet;
+    }
+
+    /**
+     * Check that the information of version has problem.
+     * If the two networks have different versions, ask do you want to continue.
+     * @param loaded Loaded network.
+     * @return Do loaded network has problem?
+     */
+    protected static boolean versionHasProblem(Network loaded){
+        if (!Version.version.equals(loaded.version)){
+            System.out.println("The versions of the two Network classes do not match.");
+            System.out.printf("The version of loaded is %s\n", loaded.version);
+            System.out.printf("The version of this is %s\n", Version.version);
+            System.out.println("There is a risk of serious error.");
+            System.out.print("Do you want to continue? [y/n] ");
+
+            Scanner sc = new Scanner(System.in);
+            String ans = Network.nextLine(sc);
+
+            while (!(ans.equals("y") || ans.equals("Y")
+                     || ans.equals("n") || ans.equals("N"))){
+                System.out.println("Choose 'y' or 'n'.");
+                System.out.print("Do you want to continue? [y/n] ");
+                ans = Network.nextLine(sc);
+            }
+
+            if (ans.equals("y") || ans.equals("Y")){
+                return false;
+            }else{
+                System.out.println("End.");
+                return true;
+            }
+        }else{
+            return false;
+        }
+    }
+
+    /**
+     * Read next line.
+     * If read String is Null, return "".
+     * @param sc Scanner instance.
+     * @return Readed String instance.
+     */
+    private static String nextLine(Scanner sc) throws NoSuchElementException {
+        String ans;
+        try {
+            ans = sc.nextLine();
+        }catch (NoSuchElementException e){
+            ans = "";
+        }
+
+        return ans;
     }
 
     /**
