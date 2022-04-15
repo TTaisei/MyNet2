@@ -10,32 +10,6 @@ import org.MyNet2.actFunc.*;
  * Class for convolution layer.
  */
 public class Conv extends Layer {
-    /** The list of weight for this layer */
-    public Matrix w;
-    /** Type of activation function for this layer. */
-    public AFType afType;
-    /** Activation function of this layer. */
-    public ActivationFunction actFunc;
-    /** Name of this layer's activation function. */
-    public String actFuncName;
-
-    /** Number of channel. */
-    public int channelNum;
-    /** Number of kernel. */
-    public int kernelNum;
-    /** Row of weight matrix. */
-    public int wRow;
-    /** Column of weight matrix. */
-    public int wCol;
-    /** Row of input. */
-    public int inRow;
-    /** Column of input. */
-    public int inCol;
-    /** Row of output. */
-    public int outRow;
-    /** Column of output. */
-    public int outCol;
-
     /**
      * Constructor for this class.
      * @param kernelNum Number of kernel.
@@ -46,6 +20,7 @@ public class Conv extends Layer {
         if (wShape.length != 2){
             this.exit("wShape length is wrong");
         }
+        this.name = "Conv";
         this.kernelNum = kernelNum;
         this.wRow = wShape[0];
         this.wCol = wShape[1];
@@ -86,7 +61,7 @@ public class Conv extends Layer {
      * @param seed Number of seed for random class.
      * @param afType Type of activation fucntion for this layer.
      */
-    protected void setup(int channelNum, int kernelNum, int[] inShape, int[] wShape, AFType afType, long seed){
+    public void setup(int channelNum, int kernelNum, int[] inShape, int[] wShape, AFType afType, long seed){
         if (inShape.length != 2){
             this.exit("inShape length is wrong.");
         }else if (wShape.length != 2){
@@ -163,9 +138,9 @@ public class Conv extends Layer {
     public String toString(){
         String str = String.format(
             "----------------------------------------------------------------\n"
-            + "Convolution\n"
-            + "channels: %d, kernels: %d, conv size: %dx%d",
-            this.channelNum, this.kernelNum, this.wRow, this.wCol
+            + "Convolution\nact: %s\n"
+            + "%d, %d, %d => (%d, %d) => %d, %d, %d",
+            this.actFuncName, this.channelNum, this.inRow, this.inCol, this.wRow, this.wCol, this.kernelNum, this.outRow, this.outCol
         );
 
         return str;

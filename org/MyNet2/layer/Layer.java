@@ -23,12 +23,22 @@ public class Layer implements Serializable {
     public int channelNum;
     /** Number of kernel. */
     public int kernelNum;
+    /** Row of input. */
+    public int inRow;
+    /** Column of input. */
+    public int inCol;
     /** Row of output. */
     public int outRow;
     /** Column of output. */
     public int outCol;
     /** Number of nodes for this layer. */
     public int nodesNum;
+    /** Row of weight matrix. */
+    public int wRow;
+    /** Column of weight matrix. */
+    public int wCol;
+    /** Pooling matrix size. */
+    public int poolSize;
 
     public void exit(String msg){
         System.out.println(msg);
@@ -44,13 +54,35 @@ public class Layer implements Serializable {
     }
 
     /**
-     * Construct instead of constructor.
+     * Construct instead of constructor for dense layer.
      * @param inNum Number of inputs don't contain bias.
      * @param nodesNum Number of nodes of this class.
      * @param afType Type of activation function for this layer.
      * @param seed Number of seed for random class.
      */
     public void setup(int inNum, int nodesNum, AFType afType, long seed){
+        ;
+    }
+
+    /**
+     * Construct instead of constructor for conv layer.
+     * @param inNum Number of inputs don't contain bias.
+     * @param nodesNum Number of nodes of this class.
+     * @param afType Type of activation function for this layer.
+     * @param seed Number of seed for random class.
+     */
+    public void setup(int channelNum, int kernelNum, int[] inShape, int[] wShape, AFType afType, long seed){
+        ;
+    }
+
+    /**
+     * Construct instead of constructor for max pooling layer.
+     * @param inNum Number of inputs don't contain bias.
+     * @param nodesNum Number of nodes of this class.
+     * @param afType Type of activation function for this layer.
+     * @param seed Number of seed for random class.
+     */
+    public void setup(int channelNum, int[] inShape, int poolSize){
         ;
     }
 

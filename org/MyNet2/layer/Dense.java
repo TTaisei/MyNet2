@@ -106,8 +106,8 @@ public class Dense extends Layer {
     public String toString(){
         String str = String.format(
             "----------------------------------------------------------------\n"
-            + "Dense\n"
-            + "nodes num: %d, activation function: %s", this.nodesNum, this.actFuncName
+            + "Dense\nact: %s\n"
+            + "%d => %d", this.actFuncName, this.inNum-1, this.nodesNum
         );
 
         return str;

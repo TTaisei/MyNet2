@@ -43,6 +43,7 @@ public class Network implements Serializable {
 
     /**
      * Construct instead of constructor.
+     * Only dense layer.
      * @param seed Seed of random.
      * @param inNum Number of input.
      * @param layers Each layers.
@@ -57,18 +58,91 @@ public class Network implements Serializable {
                 layer.setup(nextLayerInNum, layer.nodesNum, layer.afType, seed);
                 nextLayerInNum = layer.nodesNum;
                 break;
-            case "Conv":
-                nextLayerInNum = layer.kernelNum * layer.outRow * layer.outCol;
-                break;
-            case "MaxPooling":
-                nextLayerInNum = layer.channelNum * layer.outRow * layer.outCol;
-                System.out.println(nextLayerInNum);
-                break;
             default:
                 this.exit("layer error");
             }
         }
     }
+
+    /**
+     * Construct of this class.
+     * Contain convulation and pooling layer.
+     * @param channeNum Numer of channel.
+     * @param inRow Row of input matrix.
+     * @param inCol Column of input matrix.
+     * @param inNum Number of input.
+     * @param layers Each layers.
+     */
+    public Network(int channelNum, int inRow, int inCol, Layer ... layers){
+        this.setup(0, channelNum, inRow, inCol, layers);
+    }
+
+    /**
+     * Construct of this class.
+     * Contain convulation and pooling layer.
+     * @param seed Number of seed.
+     * @param channeNum Numer of channel.
+     * @param inRow Row of input matrix.
+     * @param inCol Column of input matrix.
+     * @param inNum Number of input.
+     * @param layers Each layers.
+     */
+    public Network(int seed, int channelNum, int inRow, int inCol, Layer ... layers){
+        this.setup(seed, channelNum, inRow, inCol, layers);
+    }
+
+    /**
+     * Construct instead of constructor.
+     * Contain convulation and pooling layer.
+     * @param channeNum Numer of channel.
+     * @param inRow Row of input matrix.
+     * @param inCol Column of input matrix.
+     * @param inNum Number of input.
+     * @param layers Each layers.
+     */
+    protected void setup(int seed, int channelNum, int inRow, int inCol, Layer ... layers){
+        this.layers = layers;
+        int nextLayerChannelNum = channelNum;
+        int nextLayerInRow = inRow;
+        int nextLayerInCol = inCol;
+        int nextLayerInNum = 0;
+
+        for (Layer layer: this.layers){
+            switch (layer.name){
+            case "Dense":
+                layer.setup(nextLayerInNum, layer.nodesNum, layer.afType, seed);
+                nextLayerInNum = layer.nodesNum;
+                break;
+            case "Conv":
+                layer.setup(
+                    nextLayerChannelNum,
+                    layer.kernelNum,
+                    new int[]{nextLayerInRow, nextLayerInCol},
+                    new int[]{layer.wRow, layer.wCol},
+                    layer.afType,
+                    seed
+                );
+                nextLayerChannelNum = layer.kernelNum;
+                nextLayerInRow = layer.outRow;
+                nextLayerInCol = layer.outCol;
+                nextLayerInNum = layer.kernelNum * layer.outRow * layer.outCol;
+                break;
+            case "MaxPooling":
+                layer.setup(
+                    nextLayerChannelNum,
+                    new int[]{nextLayerInRow, nextLayerInCol},
+                    layer.poolSize
+                );
+                nextLayerChannelNum = layer.channelNum;
+                nextLayerInRow = layer.outRow;
+                nextLayerInCol = layer.outCol;
+                nextLayerInNum = layer.channelNum * layer.outRow * layer.outCol;
+                break;
+            default:
+                this.exit("layer error");
+            }
+        }
+    }    
 
     /**
      * Doing forward propagation.

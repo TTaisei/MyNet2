@@ -11,6 +11,7 @@ public class MaxPooling extends Pooling {
      * @param poolSize Size of pooling matrix.
      */
     public MaxPooling(int poolSize){
+        this.name = "MaxPooling";
         this.poolSize = poolSize;
     }
 
@@ -21,6 +22,16 @@ public class MaxPooling extends Pooling {
      * @param poolSize Size of pooling matrix.
      */
     public MaxPooling(int channelNum, int[] inShape, int poolSize){
+        this.setup(channelNum, inShape, poolSize);
+    }
+
+    /**
+     * Construct instead of constructor.
+     * @param channelNum Number of channel.
+     * @param inShape Shape of input.
+     * @param poolSize Size of pooling matrix. 
+     */
+    public void setup(int channelNum, int[] inShape, int poolSize){
         if (inShape.length != 2){
             this.exit("inShape length is wrong.");
         }
@@ -78,8 +89,9 @@ public class MaxPooling extends Pooling {
     public String toString(){
         String str = String.format(
             "----------------------------------------------------------------\n"
-            + "MaxPooling\n"
-            + "channels: %d, pool size: %d", this.channelNum, this.poolSize
+            + "MaxPooling\nact: null\n"
+            + "%d, %d, %d => (%d, %d) => %d, %d, %d",
+            this.channelNum, this.inRow, this.inCol, this.poolSize, this.poolSize, this.channelNum, this.outRow, this.outCol
         );
 
         return str;
