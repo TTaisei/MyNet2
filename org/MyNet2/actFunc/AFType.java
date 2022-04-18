@@ -8,5 +8,6 @@ public enum AFType {
     SIGMOID,
     RELU,
     TANH,
-    LINEAR
+    LINEAR,
+    SOFTMAX
 }

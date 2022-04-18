@@ -94,6 +94,9 @@ public class Conv extends Layer {
         case LINEAR:
             this.actFunc = new Linear();
             break;
+        case SOFTMAX:
+            this.actFunc = new Softmax();
+            break;
         default:
             System.out.println("ERROR: The specified activation function is wrong");
             System.exit(-1);
