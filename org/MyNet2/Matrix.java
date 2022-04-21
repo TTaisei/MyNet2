@@ -416,6 +416,23 @@ public class Matrix implements Serializable {
     }
 
     /**
+     * Sort this matrix vertically.
+     * @param order Order of sort.
+     * @return Matrix instance.
+     */
+    public Matrix vsort(ArrayList<Integer> order){
+        Matrix rtn = new Matrix(order.size(), this.col);
+
+        for (int i = 0; i < order.size(); i++){
+            for (int j = 0; j < this.col; j++){
+                rtn.matrix[i][j] = this.matrix[order.get(i)][j];
+            }
+        }
+
+        return rtn;
+    }
+
+    /**
      * Return absolute value of this matrix.
      * @return New matrix instance.
      */

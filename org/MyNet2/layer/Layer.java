@@ -16,8 +16,15 @@ public class Layer implements Serializable {
     public ActivationFunction actFunc;
     /** Name of this layer's activation function. */
     public String actFuncName;
+    /** Delta. */
+    public Matrix delta;
     /** Name of this layer */
     public String name = null;
+
+    /** Linear transformed matrix. */
+    public Matrix x;
+    /** Matrix of output from this layer. */
+    public Matrix a;
 
     /** Number of channel. */
     public int channelNum;

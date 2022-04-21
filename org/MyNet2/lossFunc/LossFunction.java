@@ -20,7 +20,7 @@ public class LossFunction {
      * @return Diiference between y and b.
      */
     public double calc(Matrix y, Matrix t){
-        return y.sub(t);
+        return 0.0;
     }
 
     /**

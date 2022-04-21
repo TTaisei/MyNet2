@@ -17,11 +17,6 @@ public class Dense extends Layer {
 
     /** Number of inputs contain bias. */
     public int inNum;
-    
-    /** Linear transformed matrix. */
-    public Matrix x;
-    /** Matrix of output from this layer. */
-    public Matrix a;
 
     /**
      * Constructor for this class.
@@ -32,6 +27,7 @@ public class Dense extends Layer {
         this.name = "Dense";
         this.nodesNum = nodesNum;
         this.afType = afType;
+        this.delta = new Matrix(nodesNum, 1);
     }
 
     /**
@@ -70,6 +66,7 @@ public class Dense extends Layer {
         this.w = new Matrix(this.inNum, nodesNum, new Random(seed), -1, 1);
         this.x = new Matrix(this.inNum, this.nodesNum);
         this.a = new Matrix(this.inNum, this.nodesNum);
+        this.delta = new Matrix(nodesNum, 1);
 
         switch(afType) {
         case SIGMOID:
@@ -101,8 +98,9 @@ public class Dense extends Layer {
      */
     @Override
     public Matrix forward(Matrix in){
-        Matrix in_ = in.appendCol(1.0);
-        return this.actFunc.calc(in_.dot(this.w));
+        this.x = in.appendCol(1.0).dot(this.w);
+        this.a = this.actFunc.calc(this.x);
+        return this.a.clone();
     }
 
     @Override

@@ -26,7 +26,7 @@ public class MSE extends LossFunction {
 
         for (int i = 0; i < y.row; i++){
             for (int j = 0; j < y.col; j++){
-                rtn.matrix[i][0] += Math.pow(y.matrix[i][0] - t.matrix[i][0], 2);
+                rtn += Math.pow(y.matrix[i][0] - t.matrix[i][0], 2);
             }
         }
 
