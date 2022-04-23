@@ -52,14 +52,22 @@ public class Network implements Serializable {
      * @param layers Each layers.
      */
     protected void setup(int seed, int inNum, Layer ... layers){
-        this.layers = layers;
+        this.layers = new Layer[layers.length];
         int nextLayerInNum = inNum;
 
-        for (Layer layer: this.layers){
-            switch (layer.name){
+        for (int i = 0; i < this.layers.length; i++){
+            switch (layers[i].name){
             case "Dense":
-                layer.setup(nextLayerInNum, layer.nodesNum, layer.afType, seed);
-                nextLayerInNum = layer.nodesNum;
+                this.layers[i] = layers[i].clone();
+                this.layers[i].setup(
+                    nextLayerInNum,
+                    layers[i].nodesNum,
+                    layers[i].afType,
+                    seed
+                );
+                nextLayerInNum = layers[i].nodesNum;
+                System.out.println("in Network");
+                System.out.println(this.layers[i].actFunc);
                 break;
             default:
                 this.exit("layer error");

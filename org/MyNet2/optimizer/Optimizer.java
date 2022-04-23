@@ -87,7 +87,11 @@ public class Optimizer {
         Matrix cal;
 
         cal = this.lossFunc.diff(lastLayer.a, t);
+        System.out.println(cal);
+        System.out.println(lastLayer.x);
+        System.out.println(lastLayer.actFunc.diff(lastLayer.x));
         cal = cal.T().dot(lastLayer.actFunc.diff(lastLayer.x));
+        System.out.println(cal);
         lastLayer.delta = cal.clone();
         // for (int i = 0; i < lastLyaer.nodesNum; i++){
         //     lastLayer.delta.matrix[i][0] = cal.matrix[i][0];

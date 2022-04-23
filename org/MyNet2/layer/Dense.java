@@ -88,7 +88,10 @@ public class Dense extends Layer {
             System.out.println("ERROR: The specified activation function is wrong");
             System.exit(-1);
         }
+        System.out.println("in Dense");
+        System.out.println(this.actFunc);
         this.actFuncName = this.actFunc.toString();
+        System.out.println(this.actFunc);
     }
 
     /**
@@ -112,5 +115,10 @@ public class Dense extends Layer {
         );
 
         return str;
+    }
+
+    @Override
+    public Layer clone(){
+        return new Dense(this.nodesNum, this.afType);
     }
 }

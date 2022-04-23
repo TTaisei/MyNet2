@@ -24,6 +24,7 @@ public class OptimizerTest {
             new Dense(5, AFType.RELU),
             new Dense(1, AFType.LINEAR)
         );
+        // System.out.println(net.layers[1].actFunc);
         System.out.println(net);
         Optimizer opt = new Optimizer();
         opt.net = net;

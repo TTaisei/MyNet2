@@ -120,4 +120,8 @@ public class Layer implements Serializable {
     public String toString(){
         return "";
     }
+
+    public Layer clone(){
+        return new Layer();
+    }
 }
