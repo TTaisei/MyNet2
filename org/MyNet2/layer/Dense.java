@@ -8,16 +8,6 @@ import org.MyNet2.actFunc.*;
  * Class for dense layer.
  */
 public class Dense extends Layer {
-    /** The list of weight for this layer. */
-    public Matrix w;
-    /** Activation function of this layer. */
-    public ActivationFunction actFunc;
-    /** Name of this layer's activation function. */
-    public String actFuncName;
-
-    /** Number of inputs contain bias. */
-    public int inNum;
-
     /**
      * Constructor for this class.
      * @param nodesNum Number of nodes.
@@ -88,10 +78,7 @@ public class Dense extends Layer {
             System.out.println("ERROR: The specified activation function is wrong");
             System.exit(-1);
         }
-        System.out.println("in Dense");
-        System.out.println(this.actFunc);
         this.actFuncName = this.actFunc.toString();
-        System.out.println(this.actFunc);
     }
 
     /**

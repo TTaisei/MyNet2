@@ -88,7 +88,6 @@ public class Optimizer {
 
         cal = this.lossFunc.diff(lastLayer.a, t);
         System.out.println(cal);
-        System.out.println(lastLayer.x);
         System.out.println(lastLayer.actFunc.diff(lastLayer.x));
         cal = cal.T().dot(lastLayer.actFunc.diff(lastLayer.x));
         System.out.println(cal);

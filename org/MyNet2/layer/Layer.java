@@ -26,6 +26,8 @@ public class Layer implements Serializable {
     /** Matrix of output from this layer. */
     public Matrix a;
 
+    /** Number of input. */
+    public int inNum;
     /** Number of channel. */
     public int channelNum;
     /** Number of kernel. */

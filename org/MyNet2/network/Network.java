@@ -3,6 +3,7 @@ package org.MyNet2.network;
 import java.io.*;
 import java.util.*;
 import org.MyNet2.*;
+import org.MyNet2.actFunc.*;
 import org.MyNet2.layer.*;
 
 /**
@@ -52,22 +53,19 @@ public class Network implements Serializable {
      * @param layers Each layers.
      */
     protected void setup(int seed, int inNum, Layer ... layers){
-        this.layers = new Layer[layers.length];
+        this.layers = layers;
         int nextLayerInNum = inNum;
 
-        for (int i = 0; i < this.layers.length; i++){
-            switch (layers[i].name){
+        for (Layer layer: this.layers){
+            switch (layer.name){
             case "Dense":
-                this.layers[i] = layers[i].clone();
-                this.layers[i].setup(
+                layer.setup(
                     nextLayerInNum,
-                    layers[i].nodesNum,
-                    layers[i].afType,
+                    layer.nodesNum,
+                    layer.afType,
                     seed
                 );
-                nextLayerInNum = layers[i].nodesNum;
-                System.out.println("in Network");
-                System.out.println(this.layers[i].actFunc);
+                nextLayerInNum = layer.nodesNum;
                 break;
             default:
                 this.exit("layer error");
