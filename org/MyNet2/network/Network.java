@@ -180,8 +180,7 @@ public class Network implements Serializable {
             oos.writeObject(this);
             oos.flush();
         }catch (IOException e){
-            System.out.println("IOException");
-            System.exit(-1);
+            this.exit("IOException");
         }
     }
 

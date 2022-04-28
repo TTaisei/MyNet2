@@ -242,7 +242,7 @@ public class Matrix implements Serializable {
      * @return New matrix instance transposed of this matrix.
      */
     public Matrix T(){
-        Matrix rtn = new Matrix(this.row, this.col);
+        Matrix rtn = new Matrix(this.col, this.row);
         for (int i = 0; i < this.row; i++){
             for (int j = 0; j < this.col; j++){
                 rtn.matrix[j][i] = this.matrix[i][j];

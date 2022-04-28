@@ -27,8 +27,7 @@ public class Optimizer {
     /**
      * Constructor for this class.
      */
-    // protected Optimizer(){
-    public Optimizer(){
+    protected Optimizer(){
         ;
     }
 
@@ -71,7 +70,7 @@ public class Optimizer {
      * @param t Answer.
      */
     protected void back(Matrix x, Matrix y, Matrix t){
-        this.backLastLayer(x, y, t);
+        ;
     }
 
     /**
@@ -80,23 +79,22 @@ public class Optimizer {
      * @param y Result of forward propagation.
      * @param t Answer.
      */
-    // protected backLastLayer(Matrix x, Matrix y, Matrix t){
-    public void backLastLayer(Matrix x, Matrix y, Matrix t){
+    protected void backLastLayer(Matrix x, Matrix y, Matrix t){
         Layer lastLayer = this.net.layers[this.layersLength-1];
         Layer preLayer = this.net.layers[this.layersLength-2];
-        Matrix cal;
 
-        cal = this.lossFunc.diff(lastLayer.a, t);
-        System.out.println(cal);
-        System.out.println(lastLayer.actFunc.diff(lastLayer.x));
-        cal = cal.T().dot(lastLayer.actFunc.diff(lastLayer.x));
-        System.out.println(cal);
-        lastLayer.delta = cal.clone();
-        // for (int i = 0; i < lastLyaer.nodesNum; i++){
-        //     lastLayer.delta.matrix[i][0] = cal.matrix[i][0];
-        // }
-        cal = lastLayer.delta.dot(preLayer.a);
-        lastLayer.w.add(cal.mult(-this.eta));
+        Matrix E = this.lossFunc.diff(lastLayer.a, t);
+        Matrix f = lastLayer.actFunc.diff(lastLayer.x);
+        Matrix delta = new Matrix(lastLayer.nodesNum, 1);
+        for (int i = 0; i < lastLayer.nodesNum; i++){
+            double num = 0.;
+            for (int j = 0; j < x.row; j++){
+                num += E.matrix[j][i] * f.matrix[j][i];
+            }
+            delta.matrix[i][0] = num;
+        }
+
+        lastLayer.w = lastLayer.w.sub(delta.dot(preLayer.a.appendCol(1.).meanCol()).mult(this.eta).T());
     }
 
     /**

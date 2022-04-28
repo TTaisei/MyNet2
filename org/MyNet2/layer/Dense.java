@@ -93,6 +93,17 @@ public class Dense extends Layer {
         return this.a.clone();
     }
 
+    /**
+     * Doing back propagation.
+     * @param deltaNext Delta of next layer.
+     * @param wNext Weight of next layer.
+     * @param aPre Output matrix of previous layer.
+     */
+    @Override
+    public void back(Matrix deltaNext, Matrix wNext, Matrix aPre){
+        
+    }
+
     @Override
     public String toString(){
         String str = String.format(
