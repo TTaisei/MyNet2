@@ -49,11 +49,41 @@ public class GD extends Optimizer {
         this.backLastLayer(x, y, t);
 
         for (int i = this.layersLength-2; i >= 0; i--){
-            this.net.layers[i].back(
-                this.net.layers[i+1].delta,
-                this.net.layers[i+1].w,
-                i == 0 ? x : this.net.layers[i-1].a
-            );
+            switch (this.net.layers[i].name){
+                case "Dense":
+                    this.backDense(
+                        i,
+                        i == 0 ? x.meanCol().appendCol(1.) : this.net.layers[i-1].a.meanCol().appendCol(1.)
+                    );
+                default:
+                    ;
+            }
+        }
+    }
+
+    /**
+     * Doing back propagation.
+     * @param num Number of layer.
+     * @param aPre Output matrix of previous layer.
+     */
+    protected void backDense(int num, Matrix aPre){
+        Matrix deltaNext = this.net.layers[num+1].delta;
+        Matrix wNext = this.net.layers[num+1].w;
+        Layer nowLayer = this.net.layers[num];
+
+        double deltaEle = 0.;
+        Matrix cal;
+
+        for (int i = 0; i < deltaNext.row; i++){
+            deltaEle += wNext.getCol(i).mult(deltaNext.matrix[i][0]).sum();
+        }
+        for (int i = 0; i < nowLayer.nodesNum; i++){
+            nowLayer.delta.matrix[i][0] = 
+                deltaEle * nowLayer.actFunc.diff(nowLayer.x.getCol(i)).meanCol().matrix[0][0];
+            cal = nowLayer.w.getCol(i).add(aPre.T().mult(-this.eta));
+            for (int j = 0; j < nowLayer.inNum; j++){
+                nowLayer.w.matrix[j][i] = cal.matrix[j][0];
+            }
         }
     }
 

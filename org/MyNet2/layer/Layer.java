@@ -105,16 +105,6 @@ public class Layer implements Serializable {
     }
 
     /**
-     * Doing back propagation.
-     * @param deltaNext Delta of next layer.
-     * @param wNext Weight of next layer.
-     * @param aPre Output matrix of previous layer.
-     */
-    public void back(Matrix deltaNext, Matrix wNext, Matrix aPre){
-        ;
-    }
-
-    /**
      * Calucrate delta each nodes.
      */
     public void calDelta(){

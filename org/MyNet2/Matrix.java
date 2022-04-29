@@ -532,6 +532,52 @@ public class Matrix implements Serializable {
     }
 
     /**
+     * Get a row from this matrix.
+     * @param num Number of row.
+     * @return A matrix got from this matrix.
+     */
+    public Matrix getRow(int num){
+        Matrix rtn = new Matrix(1, this.col);
+
+        for (int i = 0; i < rtn.col; i++){
+            rtn.matrix[0][i] = this.matrix[num][i];
+        }
+
+        return rtn;
+    }
+
+    /**
+     * Get a column from this matrix.
+     * @param num Number of column.
+     * @return A matrix got from this matrix.
+     */
+    public Matrix getCol(int num){
+        Matrix rtn = new Matrix(this.row, 1);
+
+        for (int i = 0; i < rtn.row; i++){
+            rtn.matrix[i][0] = this.matrix[i][num];
+        }
+
+        return rtn;
+    }
+
+    /**
+     * Calculate sum.
+     * @return sum.
+     */
+    public double sum(){
+        double rtn = 0.;
+
+        for (int i = 0; i < this.row; i++){
+            for (int j = 0; j < this.col; j++){
+                rtn += this.matrix[i][j];
+            }
+        }
+
+        return rtn;
+    }
+
+    /**
      * Make a 4 dimentional matrix from this 2 dimentional matrix.
      * @param shape Shape of 4 dimentional matrix.
      * @return 2 dimentional matrix.
