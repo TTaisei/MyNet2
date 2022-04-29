@@ -79,27 +79,27 @@ public class Conv extends Layer {
         this.wCol = wShape[1];
 
         this.w = new Matrix(kernelNum, channelNum * wRow * wCol, new Random(seed));
+        this.b = new Matrix(kernelNum, 1, new Random(seed));
 
         this.afType = afType;
         switch (afType){
-        case SIGMOID:
-            this.actFunc = new Sigmoid();
-            break;
-        case RELU:
-            this.actFunc = new ReLU();
-            break;
-        case TANH:
-            this.actFunc = new Tanh();
-            break;
-        case LINEAR:
-            this.actFunc = new Linear();
-            break;
-        case SOFTMAX:
-            this.actFunc = new Softmax();
-            break;
-        default:
-            System.out.println("ERROR: The specified activation function is wrong");
-            System.exit(-1);
+            case SIGMOID:
+                this.actFunc = new Sigmoid();
+                break;
+            case RELU:
+                this.actFunc = new ReLU();
+                break;
+            case TANH:
+                this.actFunc = new Tanh();
+                break;
+            case LINEAR:
+                this.actFunc = new Linear();
+                break;
+            case SOFTMAX:
+                this.actFunc = new Softmax();
+                break;
+            default:
+                this.exit("ERROR: The specified activation function is wrong");
         }
         this.actFuncName = this.actFunc.toString();
     }
@@ -125,7 +125,8 @@ public class Conv extends Layer {
                                 for (int q = 0; q < this.wCol; q++){
                                     rtn.matrix[b][k*kMult + i*this.outCol + j] +=
                                         this.w.matrix[k][c*cWMult + p*this.wCol + q]
-                                        * in.matrix[b][c*cInMult + (i+p)*this.inCol + (j+q)];
+                                        * in.matrix[b][c*cInMult + (i+p)*this.inCol + (j+q)]
+                                        + this.b.matrix[k][0];
                                 }
                             }
                         }

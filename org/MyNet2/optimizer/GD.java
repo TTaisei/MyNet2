@@ -55,6 +55,10 @@ public class GD extends Optimizer {
                         i,
                         i == 0 ? x.meanCol().appendCol(1.) : this.net.layers[i-1].a.meanCol().appendCol(1.)
                     );
+                case "Conv":
+                    this.backConv(i);
+                case "MaxPooling":
+                    this.backMaxPooling(i);
                 default:
                     ;
             }
@@ -85,6 +89,22 @@ public class GD extends Optimizer {
                 nowLayer.w.matrix[j][i] = cal.matrix[j][0];
             }
         }
+    }
+
+    /**
+     * Doing back propagation.
+     * @param num Number of layer.
+     */
+    protected void backConv(int num){
+        ;
+    }
+
+    /**
+     * Doing back propagation.
+     * @param num Number of layer.
+     */
+    protected void backMaxPooling(int num){
+        ;
     }
 
     /**

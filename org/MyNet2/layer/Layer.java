@@ -10,6 +10,8 @@ import org.MyNet2.actFunc.*;
 public class Layer implements Serializable {
     /** The list of weight for this layer */
     public Matrix w;
+    /** The list of bias for this layer. */
+    public Matrix b;
     /** Type of activation function for this layer. */
     public AFType afType;
     /** Activation function of this layer. */
