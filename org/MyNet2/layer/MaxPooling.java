@@ -42,6 +42,7 @@ public class MaxPooling extends Pooling {
         this.outRow = inShape[0] / poolSize;
         this.outCol = inShape[1] / poolSize;
         this.poolSize = poolSize;
+        this.delta = new Matrix(this.channelNum, this.inRow*this.inCol);
     }
 
     /**
@@ -55,19 +56,19 @@ public class MaxPooling extends Pooling {
         double num, max;
         int kInMult = this.inRow * this.inCol;
         int kOutMult = this.outRow * this.outCol;
-        int poolSizeI, poolSizej;
+        int poolSizeI, poolSizeJ;
 
-        Matrix rtn = new Matrix(in.row, this.channelNum * this.outRow * this.outCol);
+        this.x = new Matrix(in.row, this.channelNum * this.outRow * this.outCol);
         for (int b = 0; b < in.row; b++){
             for (int k = 0; k < this.channelNum; k++){
                 for (int i = 0; i < this.outRow; i++){
                     for (int j = 0; j < this.outCol; j++){
                         max = -100.0;
                         poolSizeI = this.poolSize * i;
-                        poolSizej = this.poolSize * j;
+                        poolSizeJ = this.poolSize * j;
                         for (int p = 0; p < this.poolSize; p++){
                             for (int q = 0; q < this.poolSize; q++){
-                                itr = k*kInMult + (poolSizeI+p)*this.inCol + (poolSizej+q);
+                                itr = k*kInMult + (poolSizeI+p)*this.inCol + (poolSizeJ+q);
                                 num = in.matrix[b][itr];
 
                                 if (num > max){
@@ -76,13 +77,15 @@ public class MaxPooling extends Pooling {
                             }
                         }
 
-                        rtn.matrix[b][k*kOutMult + i*this.outCol + j] = max;
+                        this.x.matrix[b][k*kOutMult + i*this.outCol + j] = max;
                     }
                 }
             }
         }
 
-        return rtn;
+        this.a = this.x;
+
+        return this.a.clone();
     }
 
     @Override

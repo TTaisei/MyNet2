@@ -80,6 +80,7 @@ public class Conv extends Layer {
 
         this.w = new Matrix(kernelNum, channelNum * wRow * wCol, new Random(seed));
         this.b = new Matrix(kernelNum, 1, new Random(seed));
+        this.delta = new Matrix(this.channelNum, this.inRow*this.inCol);
 
         this.afType = afType;
         switch (afType){
@@ -115,7 +116,7 @@ public class Conv extends Layer {
         int cWMult = this.wRow * this.wCol;
         int cInMult = this.inRow * this.inCol;
 
-        Matrix rtn = new Matrix(in.row, this.kernelNum * this.outRow * this.outCol);
+        this.x = new Matrix(in.row, this.kernelNum * this.outRow * this.outCol);
         for (int b = 0; b < in.row; b++){
             for (int k = 0; k < this.kernelNum; k++){
                 for (int i = 0; i < this.outRow; i++){
@@ -123,7 +124,7 @@ public class Conv extends Layer {
                         for (int c = 0; c < this.channelNum; c++){
                             for (int p = 0; p < this.wRow; p++){
                                 for (int q = 0; q < this.wCol; q++){
-                                    rtn.matrix[b][k*kMult + i*this.outCol + j] +=
+                                    x.matrix[b][k*kMult + i*this.outCol + j] +=
                                         this.w.matrix[k][c*cWMult + p*this.wCol + q]
                                         * in.matrix[b][c*cInMult + (i+p)*this.inCol + (j+q)]
                                         + this.b.matrix[k][0];
@@ -135,7 +136,9 @@ public class Conv extends Layer {
             }
         }
 
-        return this.actFunc.calc(rtn);
+        this.a = this.actFunc.calc(x);
+
+        return a.clone();
     }
 
     @Override

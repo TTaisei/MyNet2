@@ -1,3 +1,4 @@
+import java.util.Random;
 import org.MyNet2.layer.*;
 import org.MyNet2.actFunc.*;
 import org.MyNet2.network.*;
@@ -31,5 +32,21 @@ public class OptimizerTest {
 
         // System.out.println(t);
         // System.out.println(net.forward(x));
+
+        Matrix4d x = new Matrix4d(new int[]{10, 2, 4, 4}, new Random(0));
+        Matrix t = new Matrix(10, 1, new Random());
+
+        Network net = new Network(
+            2, 4, 4,
+            new Conv(4, new int[]{3, 3}, AFType.RELU),
+            new MaxPooling(2),
+            new Dense(4, AFType.RELU),
+            new Dense(1, AFType.RELU)
+        );
+        net.summary();
+        Matrix y = net.forward(x.flatten());
+
+        GD opt = new GD(net, new MSE());
+        opt.back(x.flatten(), y, t);
     }
 }

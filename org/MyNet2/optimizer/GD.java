@@ -55,10 +55,16 @@ public class GD extends Optimizer {
                         i,
                         i == 0 ? x.meanCol().appendCol(1.) : this.net.layers[i-1].a.meanCol().appendCol(1.)
                     );
+                    break;
                 case "Conv":
-                    this.backConv(i);
+                    this.backConv(
+                        i,
+                        i == 0 ? x : this.net.layers[i-1].a.meanCol()
+                    );
+                    break;
                 case "MaxPooling":
                     this.backMaxPooling(i);
+                    break;
                 default:
                     ;
             }
@@ -94,9 +100,42 @@ public class GD extends Optimizer {
     /**
      * Doing back propagation.
      * @param num Number of layer.
+     * @param aPre Output matrix of previous layer.
      */
-    protected void backConv(int num){
-        ;
+    protected void backConv(int num, Matrix aPre){
+        Matrix deltaNext = this.net.layers[num+1].delta;
+        Layer nowLayer = this.net.layers[num];
+        Matrix xMeanCol = nowLayer.x.meanCol();
+        int cMult = nowLayer.wRow * nowLayer.wCol;
+        int kMult = nowLayer.outRow * nowLayer.outCol;
+        int iMult = nowLayer.outCol;
+
+        Matrix gradW = new Matrix(nowLayer.w.row, nowLayer.w.col);
+        Matrix gradB = new Matrix(nowLayer.b.row, nowLayer.b.col);
+
+        for (int k = 0; k < nowLayer.kernelNum; k++){
+            double d = 0.;
+            Matrix fD = nowLayer.actFunc.diff(xMeanCol.add(nowLayer.b.matrix[k][0]));
+
+            for (int i = 0; i < nowLayer.outRow; i++){
+                for (int j = 0; j < nowLayer.outCol; j++){
+                    d = deltaNext.matrix[k][iMult*i + j] * fD.matrix[0][kMult*k + iMult*i + j];
+                    gradB.matrix[k][0] += d;
+
+                    for (int c = 0; c < nowLayer.channelNum; c++){
+                        for (int p = 0; p < nowLayer.wRow; p++){
+                            for (int q = 0; q < nowLayer.wCol; q++){
+                                gradW.matrix[k][cMult*c + nowLayer.wCol*p + q] += d * aPre.matrix[c][nowLayer.inCol*(i+p) + j+q];
+                            }
+                        }
+                    }
+                }
+            }       
+        }
+
+        for (int k = 0; k < nowLayer.kernelNum; k++){
+            
+        }
     }
 
     /**
@@ -104,7 +143,29 @@ public class GD extends Optimizer {
      * @param num Number of layer.
      */
     protected void backMaxPooling(int num){
-        ;
+        Matrix aPre = this.net.layers[num-1].a.meanCol();
+        Matrix deltaNext = this.net.layers[num+1].delta;
+        Layer nowLayer = this.net.layers[num];
+        int kMult = nowLayer.outRow * nowLayer.outCol;
+        int iMult = nowLayer.outCol;
+        int poolSize = nowLayer.poolSize;
+
+        for (int k = 0; k < nowLayer.kernelNum; k++){
+            for (int i = 0; i < nowLayer.outRow; i++){
+                for (int j = 0; j < nowLayer.outCol; j++){
+                    for (int p = 0; p < poolSize; p++){
+                        for (int q = 0; q < poolSize; q++){
+                            if (nowLayer.a.matrix[0][kMult*k + iMult*i + j]
+                            == aPre.matrix[0][kMult*k + iMult*(poolSize*i+p) + poolSize*j+q]){
+                                nowLayer.delta.matrix[k][iMult*(poolSize*i+p) + poolSize*j+q] = deltaNext.matrix[k][iMult*i + j];
+                            }else{
+                                nowLayer.delta.matrix[k][iMult*(poolSize*i+p) + poolSize*j+q] = 0.;
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     /**

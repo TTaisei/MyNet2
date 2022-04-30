@@ -118,37 +118,37 @@ public class Network implements Serializable {
 
         for (Layer layer: this.layers){
             switch (layer.name){
-            case "Dense":
-                layer.setup(nextLayerInNum, layer.nodesNum, layer.afType, seed);
-                nextLayerInNum = layer.nodesNum;
-                break;
-            case "Conv":
-                layer.setup(
-                    nextLayerChannelNum,
-                    layer.kernelNum,
-                    new int[]{nextLayerInRow, nextLayerInCol},
-                    new int[]{layer.wRow, layer.wCol},
-                    layer.afType,
-                    seed
-                );
-                nextLayerChannelNum = layer.kernelNum;
-                nextLayerInRow = layer.outRow;
-                nextLayerInCol = layer.outCol;
-                nextLayerInNum = layer.kernelNum * layer.outRow * layer.outCol;
-                break;
-            case "MaxPooling":
-                layer.setup(
-                    nextLayerChannelNum,
-                    new int[]{nextLayerInRow, nextLayerInCol},
-                    layer.poolSize
-                );
-                nextLayerChannelNum = layer.channelNum;
-                nextLayerInRow = layer.outRow;
-                nextLayerInCol = layer.outCol;
-                nextLayerInNum = layer.channelNum * layer.outRow * layer.outCol;
-                break;
-            default:
-                this.exit("layer error");
+                case "Dense":
+                    layer.setup(nextLayerInNum, layer.nodesNum, layer.afType, seed);
+                    nextLayerInNum = layer.nodesNum;
+                    break;
+                case "Conv":
+                    layer.setup(
+                        nextLayerChannelNum,
+                        layer.kernelNum,
+                        new int[]{nextLayerInRow, nextLayerInCol},
+                        new int[]{layer.wRow, layer.wCol},
+                        layer.afType,
+                        seed
+                    );
+                    nextLayerChannelNum = layer.kernelNum;
+                    nextLayerInRow = layer.outRow;
+                    nextLayerInCol = layer.outCol;
+                    nextLayerInNum = layer.kernelNum * layer.outRow * layer.outCol;
+                    break;
+                case "MaxPooling":
+                    layer.setup(
+                        nextLayerChannelNum,
+                        new int[]{nextLayerInRow, nextLayerInCol},
+                        layer.poolSize
+                    );
+                    nextLayerChannelNum = layer.channelNum;
+                    nextLayerInRow = layer.outRow;
+                    nextLayerInCol = layer.outCol;
+                    nextLayerInNum = layer.channelNum * layer.outRow * layer.outCol;
+                    break;
+                default:
+                    this.exit("layer error");
             }
         }
     }
