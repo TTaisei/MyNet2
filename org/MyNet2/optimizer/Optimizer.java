@@ -2,8 +2,6 @@ package org.MyNet2.optimizer;
 
 import java.util.ArrayList;
 import java.util.Random;
-import java.io.PrintWriter;
-import java.io.IOException;
 
 import org.MyNet2.network.*;
 import org.MyNet2.lossFunc.*;
@@ -71,29 +69,5 @@ public class Optimizer {
      */
     protected void back(Matrix x, Matrix y, Matrix t){
         ;
-    }
-
-    /**
-     * Doing back propagation to last layer.
-     * @param x input matrix.
-     * @param y Result of forward propagation.
-     * @param t Answer.
-     */
-    protected void backLastLayer(Matrix x, Matrix y, Matrix t){
-        Layer lastLayer = this.net.layers[this.layersLength-1];
-        Layer preLayer = this.net.layers[this.layersLength-2];
-
-        Matrix E = this.lossFunc.diff(lastLayer.a, t);
-        Matrix f = lastLayer.actFunc.diff(lastLayer.x);
-        Matrix delta = new Matrix(lastLayer.nodesNum, 1);
-        for (int i = 0; i < lastLayer.nodesNum; i++){
-            double num = 0.;
-            for (int j = 0; j < x.row; j++){
-                num += E.matrix[j][i] * f.matrix[j][i];
-            }
-            delta.matrix[i][0] = num;
-        }
-
-        lastLayer.w = lastLayer.w.sub(delta.dot(preLayer.a.appendCol(1.).meanCol()).mult(this.eta).T());
     }
 }

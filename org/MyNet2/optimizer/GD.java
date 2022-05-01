@@ -44,8 +44,7 @@ public class GD extends Optimizer {
      * @param y Result of forward propagation.
      * @param t Answer.
      */
-    // protected void back(Matrix x, Matrix y, Matrix t){
-    public void back(Matrix x, Matrix y, Matrix t){
+    protected void back(Matrix x, Matrix y, Matrix t){
         this.backLastLayer(x, y, t);
 
         for (int i = this.layersLength-2; i >= 0; i--){
@@ -69,6 +68,30 @@ public class GD extends Optimizer {
                     ;
             }
         }
+    }
+
+    /**
+     * Doing back propagation to last layer.
+     * @param x input matrix.
+     * @param y Result of forward propagation.
+     * @param t Answer.
+     */
+    protected void backLastLayer(Matrix x, Matrix y, Matrix t){
+        Layer lastLayer = this.net.layers[this.layersLength-1];
+        Layer preLayer = this.net.layers[this.layersLength-2];
+
+        Matrix E = this.lossFunc.diff(lastLayer.a, t);
+        Matrix f = lastLayer.actFunc.diff(lastLayer.x);
+        Matrix delta = new Matrix(lastLayer.nodesNum, 1);
+        for (int i = 0; i < lastLayer.nodesNum; i++){
+            double num = 0.;
+            for (int j = 0; j < x.row; j++){
+                num += E.matrix[j][i] * f.matrix[j][i];
+            }
+            delta.matrix[i][0] = num;
+        }
+
+        lastLayer.w = lastLayer.w.sub(delta.dot(preLayer.a.appendCol(1.).meanCol()).mult(this.eta).T());
     }
 
     /**
@@ -130,11 +153,34 @@ public class GD extends Optimizer {
                         }
                     }
                 }
-            }       
+            }
         }
 
-        for (int k = 0; k < nowLayer.kernelNum; k++){
-            
+        nowLayer.b = nowLayer.b.add(gradB.mult(-this.eta));
+        nowLayer.w = nowLayer.w.add(gradW.mult(-this.eta));
+
+        double d;
+        for (int c = 0; c < nowLayer.channelNum; c++){
+            for (int i = 0; i < nowLayer.inRow; i++){
+                for (int j = 0; j < nowLayer.inCol; j++){
+                    for (int k = 0; k < nowLayer.kernelNum; k++){
+                        Matrix fD = nowLayer.actFunc.diff(xMeanCol.add(nowLayer.b.matrix[k][0]));
+
+                        for (int p = 0; p < nowLayer.wRow; p++){
+                            for (int q = 0; q < nowLayer.wCol; q++){
+                                if ((i - (nowLayer.wRow-1) - p < 0) || (j - (nowLayer.wCol - 1) - q < 0)){
+                                    d = 0.;
+                                }else{
+                                    d = deltaNext.matrix[k][iMult*(i-(nowLayer.wRow-1)-p) + j-(nowLayer.wCol-1)-q]
+                                        * fD.matrix[0][kMult*k + iMult*(i-(nowLayer.wRow-1)-p) + j-(nowLayer.wCol-1)-q]
+                                        * nowLayer.w.matrix[k][cMult*c + nowLayer.wCol*p + q];
+                                }
+                                nowLayer.delta.matrix[c][iMult*i + j] += d;
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 
