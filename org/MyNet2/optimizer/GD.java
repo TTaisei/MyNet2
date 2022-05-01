@@ -82,16 +82,15 @@ public class GD extends Optimizer {
 
         Matrix E = this.lossFunc.diff(lastLayer.a, t);
         Matrix f = lastLayer.actFunc.diff(lastLayer.x);
-        Matrix delta = new Matrix(lastLayer.nodesNum, 1);
         for (int i = 0; i < lastLayer.nodesNum; i++){
             double num = 0.;
             for (int j = 0; j < x.row; j++){
                 num += E.matrix[j][i] * f.matrix[j][i];
             }
-            delta.matrix[i][0] = num;
+            lastLayer.delta.matrix[i][0] = num;
         }
 
-        lastLayer.w = lastLayer.w.sub(delta.dot(preLayer.a.appendCol(1.).meanCol()).mult(this.eta).T());
+        lastLayer.w = lastLayer.w.add(lastLayer.delta.dot(preLayer.a.appendCol(1.).meanCol()).mult(-this.eta).T());
     }
 
     /**
@@ -113,7 +112,7 @@ public class GD extends Optimizer {
         for (int i = 0; i < nowLayer.nodesNum; i++){
             nowLayer.delta.matrix[i][0] = 
                 deltaEle * nowLayer.actFunc.diff(nowLayer.x.getCol(i)).meanCol().matrix[0][0];
-            cal = nowLayer.w.getCol(i).add(aPre.T().mult(-this.eta));
+            cal = nowLayer.w.getCol(i).add(aPre.T().mult(-this.eta*nowLayer.delta.matrix[i][0]));
             for (int j = 0; j < nowLayer.inNum; j++){
                 nowLayer.w.matrix[j][i] = cal.matrix[j][0];
             }

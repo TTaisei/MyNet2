@@ -78,8 +78,8 @@ public class Conv extends Layer {
         this.wRow = wShape[0];
         this.wCol = wShape[1];
 
-        this.w = new Matrix(kernelNum, channelNum * wRow * wCol, new Random(seed));
-        this.b = new Matrix(kernelNum, 1, new Random(seed));
+        this.w = new Matrix(kernelNum, channelNum * wRow * wCol, new Random(seed), -1, 1);
+        this.b = new Matrix(kernelNum, 1, new Random(seed), -1, 1);
         this.delta = new Matrix(this.channelNum, this.inRow*this.inCol);
 
         this.afType = afType;

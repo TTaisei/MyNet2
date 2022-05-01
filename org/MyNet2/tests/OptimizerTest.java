@@ -26,8 +26,8 @@ public class OptimizerTest {
         //     new Dense(1, AFType.LINEAR)
         // );
         // System.out.println(net);
-        // GD opt = new GD(net, new MSE());
-        // // GD opt = new GD(net, new MSE(), 0.008);
+        // // GD opt = new GD(net, new MSE());
+        // GD opt = new GD(net, new MSE(), 0.008);
         
         // opt.fit(x, t, 5);
 
@@ -53,7 +53,13 @@ public class OptimizerTest {
         net.summary();
 
         // GD opt = new GD(net, new MSE());
-        GD opt = new GD(net, new MSE(), 0.05);
+        GD opt = new GD(net, new MSE(), 0.002);
         opt.fit(x.flatten(), t, 5);
+
+        System.out.println(t);
+        System.out.println(net.forward(x.flatten()));
+
+        Layer conv = net.layers[0];
+        System.out.println(conv.w.toMatrix4d(conv.kernelNum, conv.channelNum, conv.wRow, conv.wCol));
     }
 }
