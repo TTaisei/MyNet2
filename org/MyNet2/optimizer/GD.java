@@ -159,12 +159,11 @@ public class GD extends Optimizer {
         nowLayer.w = nowLayer.w.add(gradW.mult(-this.eta));
 
         double d;
-        for (int c = 0; c < nowLayer.channelNum; c++){
+        for (int k = 0; k < nowLayer.kernelNum; k++){
+            Matrix fD = nowLayer.actFunc.diff(xMeanCol.add(nowLayer.b.matrix[k][0]));
             for (int i = 0; i < nowLayer.inRow; i++){
                 for (int j = 0; j < nowLayer.inCol; j++){
-                    for (int k = 0; k < nowLayer.kernelNum; k++){
-                        Matrix fD = nowLayer.actFunc.diff(xMeanCol.add(nowLayer.b.matrix[k][0]));
-
+                    for (int c = 0; c < nowLayer.channelNum; c++){
                         for (int p = 0; p < nowLayer.wRow; p++){
                             for (int q = 0; q < nowLayer.wCol; q++){
                                 if ((i - (nowLayer.wRow-1) - p < 0) || (j - (nowLayer.wCol - 1) - q < 0)){
