@@ -25,6 +25,13 @@ public class Matrix implements Serializable {
 
     /**
      * Constructor for this class.
+     */
+    public Matrix(){
+        ;
+    }
+
+    /**
+     * Constructor for this class.
      * @param row Number of row.
      * @param col Number of col.
      */

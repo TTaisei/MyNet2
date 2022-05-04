@@ -1,7 +1,5 @@
 package org.MyNet2.optimizer;
 
-import java.util.ArrayList;
-import java.util.Random;
 import java.io.PrintWriter;
 import java.io.IOException;
 
@@ -14,6 +12,13 @@ import org.MyNet2.*;
  * Class for gradient descent.
  */
 public class GD extends Optimizer {
+    /**
+     * Constructor for this class.
+     */
+    protected GD(){
+        ;
+    }
+
     /**
      * Constructor fot this class.
      * @param net Optimizing network.

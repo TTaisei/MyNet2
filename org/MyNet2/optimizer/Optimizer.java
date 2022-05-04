@@ -30,6 +30,21 @@ public class Optimizer {
     }
 
     /**
+     * Set this random instance.
+     */
+    public void setRandom(){
+        this.rand = new Random(0);
+    }
+
+    /**
+     * Set this random instance.
+     * @param seed Number of seed.
+     */
+    public void setRandom(long seed){
+        this.rand = new Random(seed);
+    }
+
+    /**
      * Make data for mini batch learning.
      * @param x Input data.
      * @param t Answer.

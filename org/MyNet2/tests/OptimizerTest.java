@@ -52,9 +52,10 @@ public class OptimizerTest {
         );
         net.summary();
 
-        // GD opt = new GD(net, new MSE());
-        GD opt = new GD(net, new MSE(), 0.002);
-        opt.fit(x.flatten(), t, 5);
+        SGD opt = new SGD(net, new MSE());
+        // SGD opt = new SGD(net, new MSE(), 0.002);
+        opt.setRandom();
+        opt.fit(x.flatten(), t, 5, 2);
 
         System.out.println(t);
         System.out.println(net.forward(x.flatten()));

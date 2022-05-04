@@ -1,9 +1,16 @@
-package optimizer;
+package org.MyNet2.optimizer;
+
+import java.io.PrintWriter;
+import java.io.IOException;
+
+import org.MyNet2.network.*;
+import org.MyNet2.lossFunc.*;
+import org.MyNet2.*;
 
 /**
  * Class for stochastic gradient descent.
  */
-public class SGD extends Optimizer {
+public class SGD extends GD {
     /**
      * Constructor fot this class.
      */
@@ -12,13 +19,27 @@ public class SGD extends Optimizer {
     }
 
     /**
-     * Doing back propagation.
-     * @param x input matrix.
-     * @param y Result of forward propagation.
-     * @param t Answer.
+     * Constructor fot this class.
+     * @param net Optimizing network.
+     * @param f Loss function of this network.
      */
-    protected void back(Matrix x, Matrix y, Matrix t){
-        ;
+    public SGD(Network net, LossFunction f){
+        this.net = net;
+        this.lossFunc = f;
+        this.layersLength = net.layers.length;
+    }
+
+    /**
+     * Constructor fot this class.
+     * @param net Optimizing network.
+     * @param f Loss function of this network.
+     * @param eta Learning rate.
+     */
+    public SGD(Network net, LossFunction f, double eta){
+        this.net = net;
+        this.lossFunc = f;
+        this.layersLength = net.layers.length;
+        this.eta = eta;
     }
 
     /**
@@ -30,14 +51,16 @@ public class SGD extends Optimizer {
      * @return Output of this network.
      */
     public Matrix fit(Matrix x, Matrix t, int nEpoch, int batchSize){
-        Matrix[][] xt = this.makeMiniBatch(x, t, batchSize, rand);
-        Matrix[] xs = xt[0];
-        Matrix[] ts = xt[1];
-        Matrix y = ts[0].clone();
+        Matrix y = new Matrix();
         int backNum = (int)(x.row / batchSize) + 1;
 
         for (int i = 0; i < nEpoch; i++){
+            Matrix[][] xt = this.makeMiniBatch(x, t, batchSize, rand);
+            Matrix[] xs = xt[0];
+            Matrix[] ts = xt[1];
+
             System.out.printf("Epoch %d/%d\n", i+1, nEpoch);
+
             for (int j = 0; j < backNum; j++){
                 y = this.net.forward(xs[j]);
                 this.back(xs[j], y, ts[j]);
@@ -61,17 +84,19 @@ public class SGD extends Optimizer {
      */
     public Matrix fit(Matrix x, Matrix t, int nEpoch, int batchSize,
                       Matrix valX, Matrix valT){
-        Matrix[][] xt = this.makeMiniBatch(x, t, batchSize, rand);
-        Matrix[] xs = xt[0];
-        Matrix[] ts = xt[1];
-        Matrix[][] valxt = this.makeMiniBatch(valX, valT, batchSize, rand);
-        Matrix[] valxs = valxt[0];
-        Matrix[] valts = valxt[1];
-        Matrix y = ts[0].clone();
-        Matrix valY;
+        Matrix y = new Matrix();
         int backNum = (int)(x.row / batchSize) + 1;
+        int valBatchSize = valX.row * batchSize / x.row;
 
         for (int i = 0; i < nEpoch; i++){
+            Matrix[][] xt = this.makeMiniBatch(x, t, batchSize, rand);
+            Matrix[] xs = xt[0];
+            Matrix[] ts = xt[1];
+            Matrix[][] valxt = this.makeMiniBatch(valX, valT, valBatchSize, rand);
+            Matrix[] valxs = valxt[0];
+            Matrix[] valts = valxt[1];
+            Matrix valY;
+
             System.out.printf("Epoch %d/%d\n", i+1, nEpoch);
             for (int j = 0; j < backNum; j++){
                 valY = this.net.forward(valxs[j]);
@@ -99,10 +124,7 @@ public class SGD extends Optimizer {
      * @return Output of this network.
      */
     public Matrix fit(Matrix x, Matrix t, int nEpoch, int batchSize, String fileName){
-        Matrix[][] xt = this.makeMiniBatch(x, t, batchSize, rand);
-        Matrix[] xs = xt[0];
-        Matrix[] ts = xt[1];
-        Matrix y = ts[0].clone();
+        Matrix y = new Matrix();
         int backNum = (int)(x.row / batchSize) + 1;
         double loss = 0.;
 
@@ -111,6 +133,10 @@ public class SGD extends Optimizer {
         ){
             fp.write("Epoch,loss\n");
             for (int i = 0; i < nEpoch; i++){
+                Matrix[][] xt = this.makeMiniBatch(x, t, batchSize, rand);
+                Matrix[] xs = xt[0];
+                Matrix[] ts = xt[1];
+
                 for (int j = 0; j < backNum; j++){
                     y = this.net.forward(xs[j]);
                     this.back(xs[j], y, ts[j]);
@@ -139,11 +165,7 @@ public class SGD extends Optimizer {
      */
     public Matrix fit(Matrix x, Matrix t, int nEpoch, int batchSize,
                       Matrix valX, Matrix valT, String fileName){
-        Matrix[][] xt = this.makeMiniBatch(x, t, batchSize, rand);
-        Matrix[] xs = xt[0];
-        Matrix[] ts = xt[1];
-        Matrix y = ts[0].clone();
-        Matrix valY;
+        Matrix y = new Matrix();
         int backNum = (int)(x.row / batchSize) + 1;
         double loss = 0., valLoss = 0.;
 
@@ -152,6 +174,11 @@ public class SGD extends Optimizer {
         ){
             fp.write("Epoch,loss,valLoss\n");
             for (int i = 0; i < nEpoch; i++){
+                Matrix[][] xt = this.makeMiniBatch(x, t, batchSize, rand);
+                Matrix[] xs = xt[0];
+                Matrix[] ts = xt[1];
+                Matrix valY;
+
                 for (int j = 0; j < backNum; j++){
                     y = this.net.forward(xs[j]);
                     this.back(xs[j], y, ts[j]);
