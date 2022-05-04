@@ -75,14 +75,4 @@ public class Optimizer {
         Matrix t_ = t.vsort(order);
         return new Matrix[][]{x_.vsplit(rtnSize), t_.vsplit(rtnSize)};
     }
-
-    /**
-     * Doing back propagation.
-     * @param x input matrix.
-     * @param y Result of forward propagation.
-     * @param t Answer.
-     */
-    protected void back(Matrix x, Matrix y, Matrix t){
-        ;
-    }
 }

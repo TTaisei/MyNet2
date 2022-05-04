@@ -42,23 +42,31 @@ public class OptimizerTest {
             Matrix cal = x.flatten().getRow(i);
             t.matrix[i][0] = cal.sum() / cal.col;
         }
+        Matrix4d valX = new Matrix4d(new int[]{5, 2, 4, 4}, new Random());
+        Matrix valT = new Matrix(5, 1);
+        for (int i = 0; i < valT.row; i++){
+            Matrix cal = valX.flatten().getRow(i);
+            valT.matrix[i][0] = cal.sum() / cal.col;
+        }
 
         Network net = new Network(
             2, 4, 4,
             new Conv(4, new int[]{3, 3}, AFType.RELU),
             new MaxPooling(2),
-            new Dense(4, AFType.RELU),
+            // new Dense(4, AFType.RELU),
             new Dense(1, AFType.LINEAR)
         );
         net.summary();
 
-        SGD opt = new SGD(net, new MSE());
-        // SGD opt = new SGD(net, new MSE(), 0.002);
+        MomentumSGD opt = new MomentumSGD(net, new MSE(), 0.01, 0.9);
+        // SGD opt = new SGD(net, new MSE(), 0.01);
         opt.setRandom();
-        opt.fit(x.flatten(), t, 5, 2);
+        opt.fit(x.flatten(), t, 1, 2, valX.flatten(), valT);
 
-        System.out.println(t);
-        System.out.println(net.forward(x.flatten()));
+        // System.out.println(t);
+        // System.out.println(net.forward(x.flatten()));
+        System.out.println(net.layers[2].w);
+        // System.out.println(net.layers[3].w);
 
         Layer conv = net.layers[0];
         System.out.println(conv.w.toMatrix4d(conv.kernelNum, conv.channelNum, conv.wRow, conv.wCol));

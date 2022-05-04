@@ -95,7 +95,7 @@ public class GD extends Optimizer {
             lastLayer.delta.matrix[i][0] = num;
         }
 
-        lastLayer.w = lastLayer.w.add(lastLayer.delta.dot(preLayer.a.appendCol(1.).meanCol()).mult(-this.eta).T());
+        lastLayer.w = lastLayer.w.add(lastLayer.delta.dot(preLayer.a.meanCol().appendCol(1.)).mult(-this.eta).T());
     }
 
     /**
