@@ -53,7 +53,7 @@ public class Optimizer {
      * @return Splited input data and answer.
      */
     protected Matrix[][] makeMiniBatch(Matrix x, Matrix t, int batchSize, Random rand){
-        int rtnSize = (int)(x.row / batchSize) + 1;
+        int rtnSize = x.row % batchSize == 0 ? x.row / batchSize : x.row / batchSize + 1;;
         int num;
         int i;
         ArrayList<Integer> order = new ArrayList<Integer>(rtnSize);

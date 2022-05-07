@@ -2,6 +2,7 @@ package org.MyNet2.optimizer;
 
 import java.io.PrintWriter;
 import java.io.IOException;
+import java.util.Random;
 
 import org.MyNet2.network.*;
 import org.MyNet2.lossFunc.*;
@@ -14,8 +15,8 @@ public class SGD extends GD {
     /**
      * Constructor fot this class.
      */
-    public SGD(){
-        ;
+    protected SGD(){
+        this.rand = new Random(0);
     }
 
     /**
@@ -27,6 +28,7 @@ public class SGD extends GD {
         this.net = net;
         this.lossFunc = f;
         this.layersLength = net.layers.length;
+        this.rand = new Random(0);
     }
 
     /**
@@ -40,6 +42,7 @@ public class SGD extends GD {
         this.lossFunc = f;
         this.layersLength = net.layers.length;
         this.eta = eta;
+        this.rand = new Random(0);
     }
 
     /**
@@ -52,7 +55,7 @@ public class SGD extends GD {
      */
     public Matrix fit(Matrix x, Matrix t, int nEpoch, int batchSize){
         Matrix y = new Matrix();
-        int backNum = (int)(x.row / batchSize) + 1;
+        int backNum = x.row % batchSize == 0 ? x.row / batchSize : x.row / batchSize + 1;
 
         for (int i = 0; i < nEpoch; i++){
             Matrix[][] xt = this.makeMiniBatch(x, t, batchSize, rand);
@@ -85,7 +88,7 @@ public class SGD extends GD {
     public Matrix fit(Matrix x, Matrix t, int nEpoch, int batchSize,
                       Matrix valX, Matrix valT){
         Matrix y = new Matrix();
-        int backNum = (int)(x.row / batchSize) + 1;
+        int backNum = x.row % batchSize == 0 ? x.row / batchSize : x.row / batchSize + 1;
         int valBatchSize = valX.row * batchSize / x.row;
 
         for (int i = 0; i < nEpoch; i++){
@@ -125,7 +128,7 @@ public class SGD extends GD {
      */
     public Matrix fit(Matrix x, Matrix t, int nEpoch, int batchSize, String fileName){
         Matrix y = new Matrix();
-        int backNum = (int)(x.row / batchSize) + 1;
+        int backNum = x.row % batchSize == 0 ? x.row / batchSize : x.row / batchSize + 1;
         double loss = 0.;
 
         try(
@@ -166,7 +169,7 @@ public class SGD extends GD {
     public Matrix fit(Matrix x, Matrix t, int nEpoch, int batchSize,
                       Matrix valX, Matrix valT, String fileName){
         Matrix y = new Matrix();
-        int backNum = (int)(x.row / batchSize) + 1;
+        int backNum = x.row % batchSize == 0 ? x.row / batchSize : x.row / batchSize + 1;
         double loss = 0., valLoss = 0.;
 
         try(

@@ -159,8 +159,8 @@ public class Network implements Serializable {
      * @return Output of this network.
      */
     public Matrix forward(Matrix in){
-        Matrix rtn = in.clone();
-
+        Matrix rtn = in;
+        
         for (Layer layer: this.layers){
             rtn = layer.forward(rtn);
         }

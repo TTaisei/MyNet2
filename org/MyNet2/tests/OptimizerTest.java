@@ -27,9 +27,12 @@ public class OptimizerTest {
         // );
         // System.out.println(net);
         // // GD opt = new GD(net, new MSE());
-        // GD opt = new GD(net, new MSE(), 0.008);
+        // // GD opt = new GD(net, new MSE(), 0.008);
+        // MomentumSGD opt = new MomentumSGD(net, new MSE());
+        // opt.setRandom();
         
-        // opt.fit(x, t, 5);
+        // // opt.fit(x, t, 5);
+        // opt.fit(x, t, 1, 2);
 
         // System.out.println(t);
         // System.out.println(net.forward(x));
@@ -42,7 +45,7 @@ public class OptimizerTest {
             Matrix cal = x.flatten().getRow(i);
             t.matrix[i][0] = cal.sum() / cal.col;
         }
-        Matrix4d valX = new Matrix4d(new int[]{5, 2, 4, 4}, new Random());
+        Matrix4d valX = new Matrix4d(new int[]{5, 2, 4, 4}, new Random(0));
         Matrix valT = new Matrix(5, 1);
         for (int i = 0; i < valT.row; i++){
             Matrix cal = valX.flatten().getRow(i);
@@ -53,20 +56,19 @@ public class OptimizerTest {
             2, 4, 4,
             new Conv(4, new int[]{3, 3}, AFType.RELU),
             new MaxPooling(2),
-            // new Dense(4, AFType.RELU),
+            new Dense(4, AFType.RELU),
             new Dense(1, AFType.LINEAR)
         );
         net.summary();
 
-        MomentumSGD opt = new MomentumSGD(net, new MSE(), 0.01, 0.9);
-        // SGD opt = new SGD(net, new MSE(), 0.01);
-        opt.setRandom();
-        opt.fit(x.flatten(), t, 1, 2, valX.flatten(), valT);
+        // AdaGrad opt = new AdaGrad(net, new MSE(), 0.000000000001, 10e-8);
+        RMSprop opt = new RMSprop(net, new MSE(), 0.01, 10e-8, 0.99);
+        opt.fit(x.flatten(), t, 5, 2, valX.flatten(), valT);
 
         // System.out.println(t);
         // System.out.println(net.forward(x.flatten()));
         System.out.println(net.layers[2].w);
-        // System.out.println(net.layers[3].w);
+        System.out.println(net.layers[3].w);
 
         Layer conv = net.layers[0];
         System.out.println(conv.w.toMatrix4d(conv.kernelNum, conv.channelNum, conv.wRow, conv.wCol));
