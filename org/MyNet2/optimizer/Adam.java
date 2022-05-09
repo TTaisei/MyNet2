@@ -1,25 +1,27 @@
 package org.MyNet2.optimizer;
 
-import org.MyNet2.*;
-import org.MyNet2.layer.*;
-import org.MyNet2.lossFunc.*;
-import org.MyNet2.network.*;
+import java.util.ArrayList;
 
-/** 
- * Class for RMSprop.
+import org.MyNet2.network.*;
+import org.MyNet2.lossFunc.*;
+import org.MyNet2.layer.*;
+import org.MyNet2.*;
+
+/**
+ * Class for Adam.
  */
-public class RMSprop extends SGD {
-    /** Number for adjust h. */
-    protected double alpha = 0.99;
-    /** Number for adjust learning rate. */
-    protected double h = 10e-8 / this.alpha;
-    /** Variable for back propagation. */
-    protected double etaDivSqrtH, sum = 0;
+public class Adam extends SGD {
+    /** beta */
+    public double beta1 = 0.9, beta2 = 0.999;
+    /** m */
+    public ArrayList<Matrix> m;
+    /** v */
+    public double v = 10e-8;
 
     /**
      * Constructor for this class.
      */
-    protected RMSprop(){
+    protected Adam(){
         ;
     }
 
@@ -28,10 +30,11 @@ public class RMSprop extends SGD {
      * @param net Optimizing network.
      * @param f Loss function of this network.
      */
-    public RMSprop(Network net, LossFunction f){
+    public Adam(Network net, LossFunction f){
         this.net = net;
         this.lossFunc = f;
         this.layersLength = net.layers.length;
+        this.setM();
     }
 
     /**
@@ -39,16 +42,35 @@ public class RMSprop extends SGD {
      * @param net Optimizing network.
      * @param f Loss function of this network.
      * @param eta Learning rate.
-     * @param h Number for adjust learning rate.
-     * @param alpha Number for adjust h.
+     * @param beta1 One of the parameter for calcration.
+     * @param beta2 One of the parameter for calcration.
+     * @param v One of the parameter for calcration.
      */
-    public RMSprop(Network net, LossFunction f, double eta, double h, double alpha){
+    public Adam(Network net, LossFunction f, double eta,
+                double beta1, double beta2, double v){
         this.net = net;
         this.lossFunc = f;
         this.layersLength = net.layers.length;
         this.eta = eta;
-        this.alpha = alpha;
-        this.h = h / this.alpha;
+        this.beta1 = beta1;
+        this.beta2 = beta2;
+        this.v = v;
+        this.setM();
+    }
+
+    /**
+     * set m.
+     */
+    protected void setM(){
+        this.m = new ArrayList<Matrix>();
+
+        for (Layer l: this.net.layers){
+            if (l.w != null){
+                this.m.add(new Matrix(l.w.row, l.w.col));
+            }else{
+                this.m.add(new Matrix());
+            }
+        }
     }
 
     /**
@@ -61,10 +83,6 @@ public class RMSprop extends SGD {
         Layer lastLayer = this.net.layers[this.layersLength-1];
         Layer preLayer = this.net.layers[this.layersLength-2];
 
-        this.h = this.alpha * this.h + (1 - this.alpha) * this.sum;
-        this.etaDivSqrtH = this.eta / Math.sqrt(this.h);
-        this.sum = 0.;
-
         Matrix E = this.lossFunc.diff(lastLayer.a, t);
         Matrix f = lastLayer.actFunc.diff(lastLayer.x);
         for (int i = 0; i < lastLayer.nodesNum; i++){
@@ -75,8 +93,6 @@ public class RMSprop extends SGD {
             lastLayer.delta.matrix[i][0] = num;
         }
 
-        Matrix gradW = lastLayer.delta.dot(preLayer.a.meanCol().appendCol(1.)).mult(-this.etaDivSqrtH).T();
-        this.sum += gradW.pow().sum();
         lastLayer.w = lastLayer.w.add(lastLayer.delta.dot(preLayer.a.meanCol().appendCol(1.)).mult(-this.eta).T());
     }
 
@@ -99,9 +115,8 @@ public class RMSprop extends SGD {
         for (int i = 0; i < nowLayer.nodesNum; i++){
             nowLayer.delta.matrix[i][0] = 
                 deltaEle * nowLayer.actFunc.diff(nowLayer.x.getCol(i)).meanCol().matrix[0][0];
-            cal = nowLayer.w.getCol(i).add(aPre.T().mult(-this.etaDivSqrtH*nowLayer.delta.matrix[i][0]));
+            cal = nowLayer.w.getCol(i).add(aPre.T().mult(-this.eta*nowLayer.delta.matrix[i][0]));
             for (int j = 0; j < nowLayer.inNum; j++){
-                this.sum += Math.pow(cal.matrix[j][0] - nowLayer.w.matrix[j][i], 2);
                 nowLayer.w.matrix[j][i] = cal.matrix[j][0];
             }
         }
@@ -143,11 +158,8 @@ public class RMSprop extends SGD {
             }
         }
 
-        nowLayer.b = nowLayer.b.add(gradB.mult(-this.etaDivSqrtH));
-        nowLayer.w = nowLayer.w.add(gradW.mult(-this.etaDivSqrtH));
-
-        this.sum += gradW.pow().sum();
-        this.sum += gradB.pow().sum();
+        nowLayer.b = nowLayer.b.add(gradB.mult(-this.eta));
+        nowLayer.w = nowLayer.w.add(gradW.mult(-this.eta));
 
         double d;
         for (int k = 0; k < nowLayer.kernelNum; k++){
