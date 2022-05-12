@@ -57,7 +57,6 @@ public class AdaGrad extends SGD {
         Layer lastLayer = this.net.layers[this.layersLength-1];
         Layer preLayer = this.net.layers[this.layersLength-2];
 
-        double sum = 0.;
         this.etaDivSqrtH = this.eta / Math.sqrt(this.h);
 
         Matrix E = this.lossFunc.diff(lastLayer.a, t);
@@ -70,10 +69,9 @@ public class AdaGrad extends SGD {
             lastLayer.delta.matrix[i][0] = num;
         }
 
-        Matrix gradW = lastLayer.delta.dot(preLayer.a.meanCol().appendCol(1.)).mult(-this.etaDivSqrtH).T();
-        sum += gradW.pow().sum();
-        lastLayer.w = lastLayer.w.add(gradW);
-        this.h += sum;
+        Matrix gradW = lastLayer.delta.dot(preLayer.a.meanCol().appendCol(1.)).T();
+        this.h += gradW.pow().sum();
+        lastLayer.w = lastLayer.w.add(gradW.mult(-this.etaDivSqrtH));
     }
 
     /**
@@ -88,23 +86,19 @@ public class AdaGrad extends SGD {
 
         double deltaEle = 0.;
         Matrix cal;
-
-        double sum = 0.;
-
+        
         for (int i = 0; i < deltaNext.row; i++){
             deltaEle += wNext.getCol(i).mult(deltaNext.matrix[i][0]).sum();
         }
         for (int i = 0; i < nowLayer.nodesNum; i++){
             nowLayer.delta.matrix[i][0] = 
                 deltaEle * nowLayer.actFunc.diff(nowLayer.x.getCol(i)).meanCol().matrix[0][0];
-            cal = nowLayer.w.getCol(i).add(aPre.T().mult(-this.etaDivSqrtH*nowLayer.delta.matrix[i][0]));
+            cal = aPre.T().mult(nowLayer.delta.matrix[i][0]);
+            this.h += cal.pow().sum();
             for (int j = 0; j < nowLayer.inNum; j++){
-                sum += Math.pow(cal.matrix[j][0] - nowLayer.w.matrix[j][i], 2);
-                nowLayer.w.matrix[j][i] = cal.matrix[j][0];
+                nowLayer.w.matrix[j][i] -= cal.matrix[j][0] * this.etaDivSqrtH;
             }
         }
-
-        this.h += sum;
     }
 
     /**

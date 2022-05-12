@@ -75,9 +75,9 @@ public class RMSprop extends SGD {
             lastLayer.delta.matrix[i][0] = num;
         }
 
-        Matrix gradW = lastLayer.delta.dot(preLayer.a.meanCol().appendCol(1.)).mult(-this.etaDivSqrtH).T();
+        Matrix gradW = lastLayer.delta.dot(preLayer.a.meanCol().appendCol(1.)).T();
         this.sum += gradW.pow().sum();
-        lastLayer.w = lastLayer.w.add(lastLayer.delta.dot(preLayer.a.meanCol().appendCol(1.)).mult(-this.eta).T());
+        lastLayer.w = lastLayer.w.add(gradW.mult(-this.etaDivSqrtH));
     }
 
     /**
@@ -99,10 +99,10 @@ public class RMSprop extends SGD {
         for (int i = 0; i < nowLayer.nodesNum; i++){
             nowLayer.delta.matrix[i][0] = 
                 deltaEle * nowLayer.actFunc.diff(nowLayer.x.getCol(i)).meanCol().matrix[0][0];
-            cal = nowLayer.w.getCol(i).add(aPre.T().mult(-this.etaDivSqrtH*nowLayer.delta.matrix[i][0]));
+            cal = aPre.T().mult(nowLayer.delta.matrix[i][0]);
+            this.sum += cal.pow().sum();
             for (int j = 0; j < nowLayer.inNum; j++){
-                this.sum += Math.pow(cal.matrix[j][0] - nowLayer.w.matrix[j][i], 2);
-                nowLayer.w.matrix[j][i] = cal.matrix[j][0];
+                nowLayer.w.matrix[j][i] -= this.etaDivSqrtH * cal.matrix[j][0];
             }
         }
     }

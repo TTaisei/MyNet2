@@ -16,7 +16,9 @@ public class Adam extends SGD {
     /** m */
     public ArrayList<Matrix> m;
     /** v */
-    public double v = 10e-8;
+    public double v = 10e-8 / this.beta2;
+    /** Variable for back propagation. */
+    protected double vTilde, sum = 0.;
 
     /**
      * Constructor for this class.
@@ -83,6 +85,10 @@ public class Adam extends SGD {
         Layer lastLayer = this.net.layers[this.layersLength-1];
         Layer preLayer = this.net.layers[this.layersLength-2];
 
+        this.v = this.beta2 * this.v + (1 - this.beta2) * this.sum;
+        this.vTilde = 1 / Math.sqrt(this.v / (1-this.beta2));
+        this.sum = 0.;
+
         Matrix E = this.lossFunc.diff(lastLayer.a, t);
         Matrix f = lastLayer.actFunc.diff(lastLayer.x);
         for (int i = 0; i < lastLayer.nodesNum; i++){
@@ -92,6 +98,9 @@ public class Adam extends SGD {
             }
             lastLayer.delta.matrix[i][0] = num;
         }
+
+        Matrix gradW = lastLayer.delta.dot(preLayer.a.meanCol().appendCol(1.)).mult(-this.eta).T();
+        this.sum += 
 
         lastLayer.w = lastLayer.w.add(lastLayer.delta.dot(preLayer.a.meanCol().appendCol(1.)).mult(-this.eta).T());
     }

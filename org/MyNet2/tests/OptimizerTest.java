@@ -61,7 +61,8 @@ public class OptimizerTest {
         );
         net.summary();
 
-        Adam opt = new Adam(net, new MSE());
+        RMSprop opt = new RMSprop(net, new MSE(), 0.00000000001, 10e-8, 0.99);
+        // AdaGrad opt = new AdaGrad(net, new MSE(), 0.000004, 10e-8);
         // RMSprop opt = new RMSprop(net, new MSE(), 0.010, 10e-8, 0.99);
         opt.fit(x.flatten(), t, 5, 2, valX.flatten(), valT);
 
