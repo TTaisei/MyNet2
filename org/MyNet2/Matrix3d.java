@@ -1,8 +1,8 @@
-package org.MyNet2;
+package org.myNet2;
 
 import java.util.ArrayList;
 import java.util.Random;
-import org.MyNet2.*;
+import org.myNet2.*;
 
 /**
  * Class for three dimentional matrix.

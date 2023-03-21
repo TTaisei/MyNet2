@@ -1,7 +1,7 @@
-package org.MyNet2.actFunc;
+package org.myNet2.actFunc;
 
 import java.lang.Math;
-import org.MyNet2.*;
+import org.myNet2.*;
 
 /**
  * Sigmoid function.

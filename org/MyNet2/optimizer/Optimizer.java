@@ -1,12 +1,12 @@
-package org.MyNet2.optimizer;
+package org.myNet2.optimizer;
 
 import java.util.ArrayList;
 import java.util.Random;
 
-import org.MyNet2.network.*;
-import org.MyNet2.lossFunc.*;
-import org.MyNet2.layer.*;
-import org.MyNet2.*;
+import org.myNet2.network.*;
+import org.myNet2.lossFunc.*;
+import org.myNet2.layer.*;
+import org.myNet2.*;
 
 /**
  * Class for optimizer.

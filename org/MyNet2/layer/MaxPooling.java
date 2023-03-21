@@ -1,6 +1,6 @@
-package org.MyNet2.layer;
+package org.myNet2.layer;
 
-import org.MyNet2.*;
+import org.myNet2.*;
 
 /**
  * Class for max pooling layer.
@@ -29,7 +29,7 @@ public class MaxPooling extends Pooling {
      * Construct instead of constructor.
      * @param channelNum Number of channel.
      * @param inShape Shape of input.
-     * @param poolSize Size of pooling matrix. 
+     * @param poolSize Size of pooling matrix.
      */
     public void setup(int channelNum, int[] inShape, int poolSize){
         if (inShape.length != 2){

@@ -1,6 +1,6 @@
-package org.MyNet2.lossFunc;
+package org.myNet2.lossFunc;
 
-import org.MyNet2.*;
+import org.myNet2.*;
 
 /**
  * Class for loss function.

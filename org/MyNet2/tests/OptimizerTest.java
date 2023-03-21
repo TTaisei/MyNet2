@@ -1,10 +1,10 @@
 import java.util.Random;
-import org.MyNet2.layer.*;
-import org.MyNet2.actFunc.*;
-import org.MyNet2.network.*;
-import org.MyNet2.optimizer.*;
-import org.MyNet2.lossFunc.*;
-import org.MyNet2.*;
+import org.myNet2.layer.*;
+import org.myNet2.actFunc.*;
+import org.myNet2.network.*;
+import org.myNet2.optimizer.*;
+import org.myNet2.lossFunc.*;
+import org.myNet2.*;
 
 public class OptimizerTest {
     public static void main(String[] str){
@@ -30,7 +30,7 @@ public class OptimizerTest {
         // // GD opt = new GD(net, new MSE(), 0.008);
         // MomentumSGD opt = new MomentumSGD(net, new MSE());
         // opt.setRandom();
-        
+
         // // opt.fit(x, t, 5);
         // opt.fit(x, t, 1, 2);
 

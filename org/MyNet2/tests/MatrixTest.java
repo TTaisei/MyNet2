@@ -1,4 +1,4 @@
-import org.MyNet2.*;
+import org.myNet2.*;
 
 public class MatrixTest {
     public static void main(String[] str){

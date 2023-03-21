@@ -1,8 +1,8 @@
-package org.MyNet2.layer;
+package org.myNet2.layer;
 
 import java.io.Serializable;
-import org.MyNet2.*;
-import org.MyNet2.actFunc.*;
+import org.myNet2.*;
+import org.myNet2.actFunc.*;
 
 /**
  * Class for layer.

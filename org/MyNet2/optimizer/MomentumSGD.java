@@ -1,11 +1,11 @@
-package org.MyNet2.optimizer;
+package org.myNet2.optimizer;
 
 import java.util.ArrayList;
 
-import org.MyNet2.network.*;
-import org.MyNet2.lossFunc.*;
-import org.MyNet2.layer.*;
-import org.MyNet2.*;
+import org.myNet2.network.*;
+import org.myNet2.lossFunc.*;
+import org.myNet2.layer.*;
+import org.myNet2.*;
 
 public class MomentumSGD extends SGD {
     /** Value of momentum. */
@@ -39,7 +39,7 @@ public class MomentumSGD extends SGD {
      * @param net Optimizing network.
      * @param f Loss function of this network.
      * @param eta Learning rate.
-     * @param alpha 
+     * @param alpha
      */
     public MomentumSGD(Network net, LossFunction f, double eta, double alpha){
         this.net = net;
@@ -120,7 +120,7 @@ public class MomentumSGD extends SGD {
             deltaEle += wNext.getCol(i).mult(deltaNext.matrix[i][0]).sum();
         }
         for (int i = 0; i < nowLayer.nodesNum; i++){
-            nowLayer.delta.matrix[i][0] = 
+            nowLayer.delta.matrix[i][0] =
                 deltaEle * nowLayer.actFunc.diff(nowLayer.x.getCol(i)).meanCol().matrix[0][0];
             cal = nowLayer.w.getCol(i).add(aPre.T().mult(-this.eta*nowLayer.delta.matrix[i][0]));
             for (int j = 0; j < nowLayer.inNum; j++){

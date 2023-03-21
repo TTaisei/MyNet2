@@ -1,4 +1,4 @@
-package org.MyNet2.actFunc;
+package org.myNet2.actFunc;
 
 /**
  * enum class for designating activation function.

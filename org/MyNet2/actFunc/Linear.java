@@ -1,6 +1,6 @@
-package org.MyNet2.actFunc;
+package org.myNet2.actFunc;
 
-import org.MyNet2.*;
+import org.myNet2.*;
 
 /**
  * Linear function.

@@ -1,5 +1,5 @@
-import org.MyNet2.layer.*;
-import org.MyNet2.actFunc.*;
+import org.myNet2.layer.*;
+import org.myNet2.actFunc.*;
 
 public class Test {
     public static void main(String[] str){

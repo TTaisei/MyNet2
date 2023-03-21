@@ -1,9 +1,9 @@
-package org.MyNet2.optimizer;
+package org.myNet2.optimizer;
 
-import org.MyNet2.*;
-import org.MyNet2.network.*;
-import org.MyNet2.lossFunc.*;
-import org.MyNet2.layer.*;
+import org.myNet2.*;
+import org.myNet2.network.*;
+import org.myNet2.lossFunc.*;
+import org.myNet2.layer.*;
 
 /**
  * Class for AdaGrad
@@ -86,12 +86,12 @@ public class AdaGrad extends SGD {
 
         double deltaEle = 0.;
         Matrix cal;
-        
+
         for (int i = 0; i < deltaNext.row; i++){
             deltaEle += wNext.getCol(i).mult(deltaNext.matrix[i][0]).sum();
         }
         for (int i = 0; i < nowLayer.nodesNum; i++){
-            nowLayer.delta.matrix[i][0] = 
+            nowLayer.delta.matrix[i][0] =
                 deltaEle * nowLayer.actFunc.diff(nowLayer.x.getCol(i)).meanCol().matrix[0][0];
             cal = aPre.T().mult(nowLayer.delta.matrix[i][0]);
             this.h += cal.pow().sum();

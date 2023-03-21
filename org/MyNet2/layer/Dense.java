@@ -1,8 +1,8 @@
-package org.MyNet2.layer;
+package org.myNet2.layer;
 
 import java.util.Random;
-import org.MyNet2.*;
-import org.MyNet2.actFunc.*;
+import org.myNet2.*;
+import org.myNet2.actFunc.*;
 
 /**
  * Class for dense layer.
@@ -52,7 +52,7 @@ public class Dense extends Layer {
         this.name = "Dense";
         this.inNum = inNum + 1;
         this.nodesNum = nodesNum;
-        
+
         this.w = new Matrix(this.inNum, nodesNum, new Random(seed), -1, 1);
         this.x = new Matrix(this.inNum, this.nodesNum);
         this.a = new Matrix(this.inNum, this.nodesNum);

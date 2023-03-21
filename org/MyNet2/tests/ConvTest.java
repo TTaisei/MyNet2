@@ -1,8 +1,8 @@
 import javax.management.relation.RelationSupport;
 
-import org.MyNet2.*;
-import org.MyNet2.layer.*;
-import org.MyNet2.actFunc.*;
+import org.myNet2.*;
+import org.myNet2.layer.*;
+import org.myNet2.actFunc.*;
 
 public class ConvTest {
     public static void main(String[] str){

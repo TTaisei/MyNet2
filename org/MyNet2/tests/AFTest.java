@@ -1,5 +1,5 @@
-import org.MyNet2.*;
-import org.MyNet2.actFunc.*;
+import org.myNet2.*;
+import org.myNet2.actFunc.*;
 
 public class AFTest {
     public static void main(String[] str){

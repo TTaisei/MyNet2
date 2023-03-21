@@ -1,4 +1,4 @@
-package org.MyNet2;
+package org.myNet2;
 
 import java.io.Serializable;
 import java.lang.Math;

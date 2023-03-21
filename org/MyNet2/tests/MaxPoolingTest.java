@@ -1,5 +1,5 @@
-import org.MyNet2.*;
-import org.MyNet2.layer.*;
+import org.myNet2.*;
+import org.myNet2.layer.*;
 
 public class MaxPoolingTest {
     public static void main(String[] str){

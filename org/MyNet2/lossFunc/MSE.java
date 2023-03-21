@@ -1,7 +1,7 @@
-package org.MyNet2.lossFunc;
+package org.myNet2.lossFunc;
 
 import java.lang.Math;
-import org.MyNet2.*;
+import org.myNet2.*;
 
 /**
  * Class for loss function.

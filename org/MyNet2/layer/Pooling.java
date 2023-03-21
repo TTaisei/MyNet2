@@ -1,6 +1,6 @@
-package org.MyNet2.layer;
+package org.myNet2.layer;
 
-import org.MyNet2.*;
+import org.myNet2.*;
 
 /**
  * Class for pooling layer.

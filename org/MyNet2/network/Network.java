@@ -1,10 +1,10 @@
-package org.MyNet2.network;
+package org.myNet2.network;
 
 import java.io.*;
 import java.util.*;
-import org.MyNet2.*;
-import org.MyNet2.actFunc.*;
-import org.MyNet2.layer.*;
+import org.myNet2.*;
+import org.myNet2.actFunc.*;
+import org.myNet2.layer.*;
 
 /**
  * Class for network.
@@ -160,7 +160,7 @@ public class Network implements Serializable {
      */
     public Matrix forward(Matrix in){
         Matrix rtn = in;
-        
+
         for (Layer layer: this.layers){
             rtn = layer.forward(rtn);
         }

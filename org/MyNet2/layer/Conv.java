@@ -1,10 +1,10 @@
-package org.MyNet2.layer;
+package org.myNet2.layer;
 
 import java.util.Random;
 import java.util.concurrent.locks.ReentrantLock;
 
-import org.MyNet2.*;
-import org.MyNet2.actFunc.*;
+import org.myNet2.*;
+import org.myNet2.actFunc.*;
 
 /**
  * Class for convolution layer.
